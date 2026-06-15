@@ -79,67 +79,73 @@ const clearWeatherDisplay = () => {
   document.getElementById('weather-result').classList.add('hidden');
 };
 
-// Correspondance code pays ISO → portail actualités Wikipedia spécifique au pays
-const COUNTRY_WIKI = {
-  'FR': { lang: 'fr', page: 'Portail:France/Actualit%C3%A9s' },
-  'BE': { lang: 'fr', page: 'Portail:Belgique/Actualit%C3%A9s' },
-  'CH': { lang: 'fr', page: 'Portail:Suisse/Actualit%C3%A9s' },
-  'CA': { lang: 'fr', page: 'Portail:Qu%C3%A9bec/Actualit%C3%A9s' },
-  'SN': { lang: 'fr', page: 'Portail:S%C3%A9n%C3%A9gal/Actualit%C3%A9s' },
-  'US': { lang: 'en', page: 'Portal:United_States/Current_events' },
-  'GB': { lang: 'en', page: 'Portal:United_Kingdom/Current_events' },
-  'AU': { lang: 'en', page: 'Portal:Australia/Current_events' },
-  'DE': { lang: 'de', page: 'Portal:Deutschland/Aktuell' },
-  'AT': { lang: 'de', page: 'Portal:%C3%96sterreich/Aktuell' },
-  'ES': { lang: 'es', page: 'Portal:Espa%C3%B1a/Actualidad' },
-  'MX': { lang: 'es', page: 'Portal:M%C3%A9xico/Actualidad' },
-  'AR': { lang: 'es', page: 'Portal:Argentina/Actualidad' },
-  'IT': { lang: 'it', page: 'Portale:Italia/In_primo_piano' },
-  'PT': { lang: 'pt', page: 'Portal:Portugal/Atualidades' },
-  'BR': { lang: 'pt', page: 'Portal:Brasil/Atualidades' },
-  'JP': { lang: 'ja', page: 'Portal:%E6%97%A5%E6%9C%AC/%E6%99%82%E4%BA%8B%E5%95%8F%E9%A1%8C' },
-  'CN': { lang: 'zh', page: 'Portal:%E4%B8%AD%E5%9B%BD%E5%A4%A7%E9%99%86/%E6%96%B0%E8%81%9E' },
+// Correspondance code pays ISO → langue Wikipedia
+const COUNTRY_WIKI_LANG = {
+  'FR': 'fr', 'BE': 'fr', 'CH': 'fr', 'SN': 'fr', 'CI': 'fr', 'CM': 'fr', 'MA': 'fr',
+  'US': 'en', 'GB': 'en', 'AU': 'en', 'NZ': 'en', 'IE': 'en', 'CA': 'en', 'ZA': 'en',
+  'DE': 'de', 'AT': 'de',
+  'ES': 'es', 'MX': 'es', 'CO': 'es', 'CL': 'es', 'PE': 'es', 'VE': 'es',
+  'IT': 'it',
+  'PT': 'pt', 'BR': 'pt',
+  'NL': 'nl', 'PL': 'pl', 'RU': 'ru', 'JP': 'ja', 'CN': 'zh',
 };
 
-// Portail générique "actualités mondiales" utilisé si le pays n'est pas dans la liste
-const FALLBACK_WIKI = { lang: 'fr', page: 'Portail:Actualit%C3%A9' };
-
 /**
- * Récupère les actualités du portail Wikipedia spécifique au pays.
- * Extrait les <li> du contenu de la page et les affiche.
+ * Récupère les actualités du jour depuis le fil Wikipedia dans la langue du pays.
+ * Essaie aujourd'hui, puis hier si le fil n'est pas encore publié.
  * @param {string} countryCode — code ISO 2 lettres (ex: "FR", "US")
  * @param {string} countryName — nom du pays affiché dans le titre
  */
 const fetchCountryNews = async (countryCode, countryName) => {
-  const wiki = COUNTRY_WIKI[countryCode] || FALLBACK_WIKI;
+  const lang = COUNTRY_WIKI_LANG[countryCode] || 'fr';
   const newsCard = document.getElementById('news-card');
   const newsList = document.getElementById('news-list');
 
-  try {
-    const url = `https://${wiki.lang}.wikipedia.org/w/api.php?action=parse&page=${wiki.page}&prop=text&format=json&origin=*`;
-    const response = await fetch(url);
-    if (!response.ok) { newsCard.classList.add('hidden'); return; }
+  const buildUrl = (date) => {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `https://${lang}.wikipedia.org/api/rest_v1/feed/featured/${y}/${m}/${d}`;
+  };
 
+  const tryFetch = async (date) => {
+    const response = await fetch(buildUrl(date));
+    if (!response.ok) return null;
     const data = await response.json();
-    if (!data.parse || !data.parse.text) { newsCard.classList.add('hidden'); return; }
+    return data.news && data.news.length > 0 ? data.news : null;
+  };
 
-    // Parse le HTML retourné par Wikipedia
-    const tmp = document.createElement('div');
-    tmp.innerHTML = data.parse.text['*'];
+  try {
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
 
-    // Récupère tous les <li> contenant du texte (au moins 40 caractères)
-    const items = Array.from(tmp.querySelectorAll('li'))
-      .map((el) => el.textContent.trim())
-      .filter((text) => text.length > 40 && !text.startsWith('↑'));
-
-    if (items.length === 0) { newsCard.classList.add('hidden'); return; }
+    // Essai aujourd'hui, puis hier en fallback
+    const news = (await tryFetch(today)) || (await tryFetch(yesterday));
+    if (!news) { newsCard.classList.add('hidden'); return; }
 
     document.getElementById('news-country-name').textContent = countryName;
     newsList.innerHTML = '';
 
-    items.slice(0, 6).forEach((text) => {
+    const tmp = document.createElement('div');
+
+    news.slice(0, 5).forEach((item) => {
+      tmp.innerHTML = item.story;
+      const text = (tmp.textContent || tmp.innerText || '').trim();
+      if (!text) return;
+
       const li = document.createElement('li');
       li.className = 'news-item';
+
+      const thumb = item.links && item.links[0] && item.links[0].thumbnail;
+      if (thumb) {
+        const img = document.createElement('img');
+        img.src = thumb.source;
+        img.alt = '';
+        img.loading = 'lazy';
+        li.appendChild(img);
+      }
+
       const p = document.createElement('p');
       p.textContent = text;
       li.appendChild(p);
