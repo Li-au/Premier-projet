@@ -2,10 +2,10 @@
 
 ## Phase 1 : Structure HTML de base
 
-- [ ] **T1.1** — Créer `index.html` avec doctype, charset UTF-8, balises sémantiques (header, main, footer)
-- [ ] **T1.2** — Créer `style.css` et `script.js` vides, liés depuis `index.html`
-- [ ] **T1.3** — Ajouter les 3 sections dans le HTML : carte météo, carte heure France, carte heure New York
-- [ ] **T1.4** — Vérification manuelle : ouvrir `index.html` dans le navigateur, confirmer la structure de base visible
+- [x] **T1.1** — Créer `index.html` avec doctype, charset UTF-8, balises sémantiques (header, main, footer) `ce06716`
+- [x] **T1.2** — Créer `style.css` et `script.js` vides, liés depuis `index.html` `ce06716`
+- [x] **T1.3** — Ajouter les 3 sections dans le HTML : carte météo, carte heure France, carte heure New York `ce06716`
+- [x] **T1.4** — Vérification manuelle : ouvrir `index.html` dans le navigateur, confirmer la structure de base visible `ce06716`
 
 ## Phase 2 : Style CSS dark mode
 
