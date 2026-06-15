@@ -54,7 +54,7 @@ const showTemperatureEmoji = (temp) => {
   const el = document.createElement('div');
   el.className = 'temp-emoji-overlay';
   el.textContent = emoji;
-  document.body.appendChild(el);
+  document.getElementById('weather-card').appendChild(el);
 
   el.addEventListener('animationend', () => el.remove(), { once: true });
 };
