@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Météo & Horloges</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Dashboard Météo & Horloges</h1>
+  </header>
+
+  <main>
+    <!-- Carte météo -->
+    <section class="card" id="weather-card">
+      <h2>Météo</h2>
+      <div class="search-container">
+        <input type="text" id="city-input" placeholder="Entrez une ville..." aria-label="Nom de la ville">
+        <button id="search-btn">Rechercher</button>
+      </div>
+      <div id="weather-result" class="weather-result hidden">
+        <img id="weather-icon" src="" alt="Icône météo">
+        <p id="weather-city" class="weather-city"></p>
+        <p id="weather-temp" class="weather-temp"></p>
+        <p id="weather-desc" class="weather-desc"></p>
+      </div>
+      <div id="weather-error" class="error-message hidden"></div>
+    </section>
+
+    <!-- Carte heure France -->
+    <section class="card" id="france-clock">
+      <h2>🇫🇷 Paris</h2>
+      <p class="clock-time" id="france-time">--:--:--</p>
+      <p class="clock-date" id="france-date"></p>
+    </section>
+
+    <!-- Carte heure New York -->
+    <section class="card" id="ny-clock">
+      <h2>🇺🇸 New York</h2>
+      <p class="clock-time" id="ny-time">--:--:--</p>
+      <p class="clock-date" id="ny-date"></p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Données météo : <a href="https://openweathermap.org" target="_blank" rel="noopener">OpenWeatherMap</a></p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
