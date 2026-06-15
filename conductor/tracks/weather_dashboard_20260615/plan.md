@@ -17,18 +17,18 @@
 
 ## Phase 3 : Horloges en temps réel
 
-- [ ] **T3.1** — Implémenter la fonction `updateClocks()` dans `script.js` avec `Intl.DateTimeFormat`
-- [ ] **T3.2** — Afficher l'heure Paris (Europe/Paris) mise à jour chaque seconde via `setInterval`
-- [ ] **T3.3** — Afficher l'heure New York (America/New_York) mise à jour chaque seconde
-- [ ] **T3.4** — Vérification manuelle : confirmer que les deux horloges affichent l'heure correcte et s'actualisent
+- [x] **T3.1** — Implémenter la fonction `updateClocks()` dans `script.js` avec `Intl.DateTimeFormat` `6aab332`
+- [x] **T3.2** — Afficher l'heure Paris (Europe/Paris) mise à jour chaque seconde via `setInterval` `6aab332`
+- [x] **T3.3** — Afficher l'heure New York (America/New_York) mise à jour chaque seconde `6aab332`
+- [x] **T3.4** — Vérification manuelle : confirmer que les deux horloges affichent l'heure correcte et s'actualisent `6aab332`
 
 ## Phase 4 : Intégration météo OpenWeatherMap
 
-- [ ] **T4.1** — Créer la fonction `fetchWeather(city)` qui appelle l'API OpenWeatherMap
-- [ ] **T4.2** — Afficher la température (°C), la description et l'icône météo dans la carte
-- [ ] **T4.3** — Brancher le champ de recherche : déclencher `fetchWeather` au clic et à la touche Entrée
-- [ ] **T4.4** — Gérer les erreurs : ville introuvable (404), clé invalide (401), réseau indisponible
-- [ ] **T4.5** — Vérification manuelle : rechercher "Paris", "London", "fakeCity" et valider les comportements
+- [x] **T4.1** — Créer la fonction `fetchWeather(city)` qui appelle l'API OpenWeatherMap `6aab332`
+- [x] **T4.2** — Afficher la température (°C), la description et l'icône météo dans la carte `6aab332`
+- [x] **T4.3** — Brancher le champ de recherche : déclencher `fetchWeather` au clic et à la touche Entrée `6aab332`
+- [x] **T4.4** — Gérer les erreurs : ville introuvable (404), clé invalide (401), réseau indisponible `6aab332`
+- [x] **T4.5** — Vérification manuelle : rechercher "Paris", "London", "fakeCity" et valider les comportements `6aab332`
 
 ## Phase 5 : Finalisation & Déploiement
 
