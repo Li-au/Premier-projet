@@ -9,11 +9,11 @@
 
 ## Phase 2 : Style CSS dark mode
 
-- [ ] **T2.1** — Implémenter le thème dark mode global (fond, couleurs, polices)
-- [ ] **T2.2** — Styler les 3 cartes (coins arrondis, ombre, espacement)
-- [ ] **T2.3** — Styler le champ de recherche et le bouton météo
-- [ ] **T2.4** — Rendre le layout responsive (flexbox/grid, mobile-first, breakpoint 768px)
-- [ ] **T2.5** — Vérification manuelle : tester l'affichage sur desktop et en mode mobile (DevTools)
+- [x] **T2.1** — Implémenter le thème dark mode global (fond, couleurs, polices) `fe9da53`
+- [x] **T2.2** — Styler les 3 cartes (coins arrondis, ombre, espacement) `fe9da53`
+- [x] **T2.3** — Styler le champ de recherche et le bouton météo `fe9da53`
+- [x] **T2.4** — Rendre le layout responsive (flexbox/grid, mobile-first, breakpoint 768px) `fe9da53`
+- [x] **T2.5** — Vérification manuelle : tester l'affichage sur desktop et en mode mobile (DevTools) `fe9da53`
 
 ## Phase 3 : Horloges en temps réel
 
