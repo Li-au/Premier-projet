@@ -2,7 +2,7 @@
 
 Page web affichant en temps réel la météo d'une ville au choix, l'heure de Paris et l'heure de New York.
 
-**Démo :** [Voir sur GitHub Pages](#) *(lien à mettre à jour après déploiement)*
+**Démo :** [Voir sur GitHub Pages](https://li-au.github.io/Premier-projet/)
 
 ## Fonctionnalités
 
