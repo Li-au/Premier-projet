@@ -15,26 +15,14 @@ Page web affichant en temps réel la météo d'une ville au choix, l'heure de Pa
 ## Technologies
 
 - HTML5 / CSS3 / JavaScript vanilla
-- [OpenWeatherMap API](https://openweathermap.org/api) (plan gratuit)
+- [Open-Meteo API](https://open-meteo.com/) — open source, 100% gratuit, aucune clé requise
 - Hébergement : GitHub Pages
 
 ## Installation et configuration
 
-### 1. Obtenir une clé API gratuite
+Aucune configuration requise ! L'API météo Open-Meteo est entièrement ouverte et publique.
 
-1. Créez un compte sur [openweathermap.org](https://openweathermap.org)
-2. Allez dans **My API Keys** et copiez votre clé
-3. Les clés gratuites peuvent prendre quelques minutes à être activées
-
-### 2. Configurer la clé API
-
-Ouvrez `script.js` et remplacez la valeur de `API_KEY` :
-
-```js
-const API_KEY = 'votre_cle_api_ici';
-```
-
-### 3. Lancer le projet
+### Lancer le projet
 
 Ouvrez simplement `index.html` dans votre navigateur. Aucune installation requise.
 

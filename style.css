@@ -145,9 +145,9 @@ main {
   padding-top: 0.5rem;
 }
 
-.weather-result img {
-  height: 72px;
-  width: 72px;
+.weather-icon-emoji {
+  font-size: 4rem;
+  line-height: 1;
 }
 
 .weather-city {

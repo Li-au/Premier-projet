@@ -1,6 +1,3 @@
-// Clé API OpenWeatherMap — remplacez par votre clé gratuite sur openweathermap.org
-const API_KEY = 'VOTRE_CLE_API_ICI';
-
 // ===== Horloges =====
 
 /**
@@ -25,20 +22,46 @@ const updateClocks = () => {
     new Intl.DateTimeFormat('en-US', { ...dateOptions, timeZone: 'America/New_York' }).format(now);
 };
 
-// Lancement immédiat puis toutes les secondes
 updateClocks();
 setInterval(updateClocks, 1000);
 
-// ===== Météo =====
+// ===== Météo — Open-Meteo (aucune clé API requise) =====
+
+// Correspondance codes météo WMO → description et emoji
+const WEATHER_CODES = {
+  0:  { desc: 'Ciel dégagé',        icon: '☀️' },
+  1:  { desc: 'Principalement dégagé', icon: '🌤️' },
+  2:  { desc: 'Partiellement nuageux', icon: '⛅' },
+  3:  { desc: 'Couvert',             icon: '☁️' },
+  45: { desc: 'Brouillard',          icon: '🌫️' },
+  48: { desc: 'Brouillard givrant',  icon: '🌫️' },
+  51: { desc: 'Bruine légère',       icon: '🌦️' },
+  53: { desc: 'Bruine modérée',      icon: '🌦️' },
+  55: { desc: 'Bruine dense',        icon: '🌧️' },
+  61: { desc: 'Pluie légère',        icon: '🌧️' },
+  63: { desc: 'Pluie modérée',       icon: '🌧️' },
+  65: { desc: 'Pluie forte',         icon: '🌧️' },
+  71: { desc: 'Neige légère',        icon: '🌨️' },
+  73: { desc: 'Neige modérée',       icon: '❄️' },
+  75: { desc: 'Neige forte',         icon: '❄️' },
+  77: { desc: 'Grains de neige',     icon: '🌨️' },
+  80: { desc: 'Averses légères',     icon: '🌦️' },
+  81: { desc: 'Averses modérées',    icon: '🌧️' },
+  82: { desc: 'Averses violentes',   icon: '⛈️' },
+  85: { desc: 'Averses de neige',    icon: '🌨️' },
+  86: { desc: 'Averses de neige fortes', icon: '❄️' },
+  95: { desc: 'Orage',               icon: '⛈️' },
+  96: { desc: 'Orage avec grêle',    icon: '⛈️' },
+  99: { desc: 'Orage avec forte grêle', icon: '⛈️' },
+};
 
 /**
  * Affiche un message d'erreur dans la carte météo.
  * @param {string} message
  */
 const showWeatherError = (message) => {
+  document.getElementById('weather-result').classList.add('hidden');
   const errorEl = document.getElementById('weather-error');
-  const resultEl = document.getElementById('weather-result');
-  resultEl.classList.add('hidden');
   errorEl.textContent = message;
   errorEl.classList.remove('hidden');
 };
@@ -52,56 +75,65 @@ const clearWeatherDisplay = () => {
 };
 
 /**
- * Récupère et affiche la météo pour une ville donnée.
+ * Récupère et affiche la météo pour une ville donnée via Open-Meteo.
+ * Étape 1 : géocodage du nom de ville → coordonnées GPS.
+ * Étape 2 : récupération des données météo actuelles.
  * @param {string} city
  */
 const fetchWeather = async (city) => {
   const trimmedCity = city.trim();
   if (!trimmedCity) return;
 
-  if (API_KEY === 'VOTRE_CLE_API_ICI') {
-    showWeatherError('Clé API manquante. Ouvrez script.js et remplacez VOTRE_CLE_API_ICI par votre clé OpenWeatherMap.');
-    return;
-  }
-
   clearWeatherDisplay();
-  document.getElementById('search-btn').textContent = '...';
-  document.getElementById('search-btn').disabled = true;
+  const btn = document.getElementById('search-btn');
+  btn.textContent = '...';
+  btn.disabled = true;
 
   try {
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(trimmedCity)}&appid=${API_KEY}&units=metric&lang=fr`;
-    const response = await fetch(url);
+    // Étape 1 — Géocodage
+    const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(trimmedCity)}&count=1&language=fr&format=json`;
+    const geoResponse = await fetch(geoUrl);
 
-    if (response.status === 401) {
-      showWeatherError('Clé API invalide. Vérifiez votre clé sur openweathermap.org.');
+    if (!geoResponse.ok) {
+      showWeatherError('Erreur de connexion. Vérifiez votre réseau.');
       return;
     }
 
-    if (response.status === 404) {
+    const geoData = await geoResponse.json();
+
+    if (!geoData.results || geoData.results.length === 0) {
       showWeatherError(`Ville "${trimmedCity}" introuvable. Vérifiez l'orthographe.`);
       return;
     }
 
-    if (!response.ok) {
-      showWeatherError('Erreur lors de la récupération des données météo. Réessayez plus tard.');
+    const { latitude, longitude, name, country } = geoData.results[0];
+
+    // Étape 2 — Météo actuelle
+    const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code&wind_speed_unit=kmh&timezone=auto`;
+    const weatherResponse = await fetch(weatherUrl);
+
+    if (!weatherResponse.ok) {
+      showWeatherError('Impossible de récupérer la météo. Réessayez plus tard.');
       return;
     }
 
-    const data = await response.json();
+    const weatherData = await weatherResponse.json();
+    const current = weatherData.current;
+    const code = current.weather_code;
+    const weather = WEATHER_CODES[code] || { desc: 'Conditions inconnues', icon: '🌡️' };
 
-    document.getElementById('weather-city').textContent = `${data.name}, ${data.sys.country}`;
-    document.getElementById('weather-temp').textContent = `${Math.round(data.main.temp)} °C`;
-    document.getElementById('weather-desc').textContent = data.weather[0].description;
-    document.getElementById('weather-icon').src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
-    document.getElementById('weather-icon').alt = data.weather[0].description;
-
+    // Affichage
+    document.getElementById('weather-icon').textContent = weather.icon;
+    document.getElementById('weather-city').textContent = `${name}, ${country}`;
+    document.getElementById('weather-temp').textContent = `${Math.round(current.temperature_2m)} °C`;
+    document.getElementById('weather-desc').textContent = weather.desc;
     document.getElementById('weather-result').classList.remove('hidden');
 
   } catch (error) {
     showWeatherError('Impossible de contacter le serveur. Vérifiez votre connexion internet.');
   } finally {
-    document.getElementById('search-btn').textContent = 'Rechercher';
-    document.getElementById('search-btn').disabled = false;
+    btn.textContent = 'Rechercher';
+    btn.disabled = false;
   }
 };
 
