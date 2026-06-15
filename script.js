@@ -75,6 +75,42 @@ const clearWeatherDisplay = () => {
 };
 
 /**
+ * Récupère une photo de la ville via l'API Wikipedia et l'affiche.
+ * Si aucune image n'est disponible, masque le conteneur d'image.
+ * @param {string} cityName
+ */
+const fetchCityImage = async (cityName) => {
+  const container = document.getElementById('city-image-container');
+  const img = document.getElementById('city-image');
+
+  try {
+    const url = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(cityName)}`;
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      container.style.display = 'none';
+      return;
+    }
+
+    const data = await response.json();
+
+    if (data.originalimage) {
+      img.src = data.originalimage.source;
+      img.alt = `Photo de ${cityName}`;
+      container.style.display = 'block';
+    } else if (data.thumbnail) {
+      img.src = data.thumbnail.source;
+      img.alt = `Photo de ${cityName}`;
+      container.style.display = 'block';
+    } else {
+      container.style.display = 'none';
+    }
+  } catch (error) {
+    container.style.display = 'none';
+  }
+};
+
+/**
  * Récupère et affiche la météo pour une ville donnée via Open-Meteo.
  * Étape 1 : géocodage du nom de ville → coordonnées GPS.
  * Étape 2 : récupération des données météo actuelles.
@@ -122,12 +158,15 @@ const fetchWeather = async (city) => {
     const code = current.weather_code;
     const weather = WEATHER_CODES[code] || { desc: 'Conditions inconnues', icon: '🌡️' };
 
-    // Affichage
+    // Affichage météo
     document.getElementById('weather-icon').textContent = weather.icon;
     document.getElementById('weather-city').textContent = `${name}, ${country}`;
     document.getElementById('weather-temp').textContent = `${Math.round(current.temperature_2m)} °C`;
     document.getElementById('weather-desc').textContent = weather.desc;
     document.getElementById('weather-result').classList.remove('hidden');
+
+    // Photo de la ville (Wikipedia)
+    fetchCityImage(name);
 
   } catch (error) {
     showWeatherError('Impossible de contacter le serveur. Vérifiez votre connexion internet.');

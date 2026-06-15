@@ -145,6 +145,25 @@ main {
   padding-top: 0.5rem;
 }
 
+.city-image-container {
+  border-radius: 8px;
+  height: 160px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  width: 100%;
+}
+
+.city-image {
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+  width: 100%;
+}
+
+.city-image:hover {
+  transform: scale(1.05);
+}
+
 .weather-icon-emoji {
   font-size: 4rem;
   line-height: 1;
