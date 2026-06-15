@@ -16,8 +16,11 @@
     <section class="card" id="weather-card">
       <h2>Météo</h2>
       <div class="search-container">
-        <input type="text" id="city-input" placeholder="Entrez une ville..." aria-label="Nom de la ville">
-        <button id="search-btn">Rechercher</button>
+        <input type="text" id="city-input" placeholder="Entrez une ville et appuyez sur Entrée..." aria-label="Nom de la ville">
+      </div>
+      <div id="suggestions-container" class="suggestions-container hidden">
+        <p class="suggestions-label">Pas la bonne ville ? Essayez :</p>
+        <div id="suggestions-list" class="suggestions-list"></div>
       </div>
       <div id="weather-result" class="weather-result hidden">
         <div id="city-image-container" class="city-image-container">
@@ -49,11 +52,6 @@
       </p>
     </section>
 
-    <!-- Carte actualités -->
-    <section class="card news-card hidden" id="news-card">
-      <h2>📰 Actualités — <span id="news-country-name"></span></h2>
-      <ul id="news-list" class="news-list"></ul>
-    </section>
   </main>
 
   <footer>

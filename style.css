@@ -25,10 +25,11 @@
 body {
   background-color: var(--bg-main);
   color: var(--text-primary);
-  font-family: var(--font);
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  font-family: var(--font);
+  min-height: 100vh;
+  transition: background-color 0.8s ease;
 }
 
 a {
@@ -46,6 +47,8 @@ header {
   padding: 2rem 1.5rem 1rem;
   text-align: center;
   border-bottom: 1px solid var(--border);
+  position: relative;
+  z-index: 2;
 }
 
 header h1 {
@@ -73,9 +76,11 @@ main {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
+  overflow: hidden;
   padding: 1.75rem;
   position: relative;
   transition: background-color 0.2s ease, border-color 0.2s ease;
+  z-index: 2;
 }
 
 .card:hover {
@@ -119,21 +124,38 @@ main {
   border-color: var(--accent);
 }
 
-#search-btn {
-  background-color: var(--accent);
-  border: none;
-  border-radius: 8px;
-  color: #0d1117;
-  cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: 600;
-  padding: 0.6rem 1.1rem;
-  transition: background-color 0.2s ease;
-  white-space: nowrap;
+
+/* ===== Suggestions de villes ===== */
+.suggestions-container {
+  margin-bottom: 0.75rem;
 }
 
-#search-btn:hover {
-  background-color: var(--accent-hover);
+.suggestions-label {
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  margin-bottom: 0.4rem;
+}
+
+.suggestions-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.suggestion-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--accent);
+  cursor: pointer;
+  font-size: 0.82rem;
+  padding: 0.3rem 0.7rem;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.suggestion-btn:hover {
+  background-color: rgba(88, 166, 255, 0.1);
+  border-color: var(--accent);
 }
 
 /* ===== Weather result ===== */
@@ -227,48 +249,122 @@ main {
   margin-left: auto;
 }
 
-/* ===== News card ===== */
-.news-card {
-  grid-column: 1 / -1;
+
+/* ===== Effets visuels météo ===== */
+
+/* Flammes */
+@keyframes flame-rise {
+  0%   { opacity: 0;   transform: translateY(0)     scaleX(1)    skewX(0deg);  }
+  7%   { opacity: 1;   }
+  22%  {               transform: translateY(-10vh) scaleX(1.08) skewX(-7deg); }
+  42%  {               transform: translateY(-23vh) scaleX(0.82) skewX(8deg);  opacity: 0.9; }
+  62%  {               transform: translateY(-36vh) scaleX(0.55) skewX(-6deg); opacity: 0.5; }
+  82%  {               transform: translateY(-44vh) scaleX(0.3)  skewX(4deg);  opacity: 0.2; }
+  100% { opacity: 0;   transform: translateY(-48vh) scaleX(0.1)  skewX(-2deg); }
 }
 
-.news-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  list-style: none;
-  padding: 0;
+.flame {
+  background:
+    radial-gradient(ellipse 38% 30% at 50% 100%, rgba(255,255,220,1) 0%, transparent 100%),
+    radial-gradient(ellipse 70% 75% at 50% 95%, #ffdd00 0%, #ff6600 30%, #ff1a00 60%, rgba(120,0,0,0) 100%);
+  bottom: 0;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  position: fixed;
+  z-index: 1;
 }
 
-.news-item {
-  border-left: 3px solid var(--accent);
-  display: flex;
-  gap: 0.75rem;
-  padding: 0.6rem 0 0.6rem 0.85rem;
+/* Lueur au sol pour températures chaudes */
+body.temp-chaud::after,
+body.temp-tres-chaud::after {
+  background: radial-gradient(ellipse 85% 100% at 50% 100%, rgba(255,70,0,0.22), transparent);
+  bottom: 0;
+  content: '';
+  height: 220px;
+  left: 0;
+  pointer-events: none;
+  position: fixed;
+  right: 0;
+  z-index: 0;
 }
 
-.news-item img {
-  border-radius: 6px;
-  flex-shrink: 0;
-  height: 56px;
-  object-fit: cover;
-  width: 80px;
+/* Flocons de neige */
+@keyframes snow-fall {
+  0%   { opacity: 0;   transform: translateY(-30px) translateX(0)            rotate(0deg); }
+  8%   { opacity: 0.9; }
+  100% { opacity: 0;   transform: translateY(108vh)  translateX(var(--drift)) rotate(var(--spin)); }
 }
 
-.news-item p {
-  color: var(--text-primary);
-  font-size: 0.9rem;
-  font-weight: 600;
-  line-height: 1.4;
+.wx-snow {
+  color: rgba(210, 235, 255, 0.88);
+  line-height: 1;
+  pointer-events: none;
+  position: fixed;
+  text-shadow:
+    0 0 6px rgba(180, 220, 255, 0.9),
+    0 0 14px rgba(150, 200, 255, 0.5);
+  top: -30px;
+  user-select: none;
+  z-index: 1;
 }
 
-.news-snippet {
-  color: var(--text-secondary);
-  display: block;
-  font-size: 0.82rem;
-  line-height: 1.4;
-  margin-top: 0.2rem;
+/* Rafales de vent */
+@keyframes wind-streak {
+  0%   { opacity: 0;    transform: translateX(-160px); }
+  10%  { opacity: 1;    }
+  88%  { opacity: 0.5;  }
+  100% { opacity: 0;    transform: translateX(calc(100vw + 160px)); }
 }
+
+.wx-wind {
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(200, 230, 255, 0.08) 8%,
+    rgba(210, 235, 255, 0.55) 35%,
+    rgba(230, 245, 255, 0.7)  50%,
+    rgba(210, 235, 255, 0.55) 65%,
+    rgba(200, 230, 255, 0.08) 92%,
+    transparent 100%
+  );
+  border-radius: 2px;
+  box-shadow:
+    0 -3px 0 rgba(200, 230, 255, 0.18),
+    0  3px 0 rgba(200, 230, 255, 0.18),
+    0 -6px 0 rgba(200, 230, 255, 0.07),
+    0  6px 0 rgba(200, 230, 255, 0.07),
+    0   0  10px rgba(180, 220, 255, 0.12);
+  height: 2px;
+  left: 0;
+  pointer-events: none;
+  position: fixed;
+  z-index: 1;
+}
+
+/* Bulles printanières */
+@keyframes bubble-rise {
+  0%   { opacity: 0;    transform: translateY(0)     translateX(0)           scale(1);   }
+  8%   { opacity: 0.8;  }
+  50%  {                transform: translateY(-30vh) translateX(var(--sway))  scale(1.05); opacity: 0.65; }
+  100% { opacity: 0;    transform: translateY(-62vh) translateX(0)           scale(0.6); }
+}
+
+.wx-bubble {
+  background:
+    radial-gradient(circle at 32% 28%, rgba(255,255,255,0.45) 0%, transparent 45%),
+    radial-gradient(circle at 65% 72%, rgba(80,200,120,0.15)  0%, transparent 55%),
+    radial-gradient(circle, rgba(90,210,130,0.18) 0%, rgba(40,160,90,0.04) 100%);
+  border: 1px solid rgba(130, 230, 160, 0.45);
+  border-radius: 50%;
+  bottom: 0;
+  box-shadow:
+    inset 0 0 10px rgba(80, 200, 120, 0.15),
+    0 0 8px rgba(80, 200, 120, 0.12);
+  pointer-events: none;
+  position: fixed;
+  z-index: 1;
+}
+
 
 /* ===== Animation emoji température ===== */
 @keyframes emoji-pop {
@@ -285,53 +381,17 @@ main {
   font-size: 2.5rem;
   line-height: 1;
   pointer-events: none;
-  position: absolute;
-  right: 1.5rem;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 10;
+  position: fixed;
+  z-index: 100;
 }
 
 /* ===== Couleurs de fond selon la température ===== */
-#weather-card {
-  transition: background-color 0.8s ease, border-color 0.8s ease, box-shadow 0.8s ease;
-}
-
-#weather-card.temp-glacial {
-  background-color: #0a1a2e;
-  border-color: #1a4a8a;
-  box-shadow: 0 4px 24px rgba(26, 74, 138, 0.4);
-}
-
-#weather-card.temp-froid {
-  background-color: #0a2030;
-  border-color: #1a6080;
-  box-shadow: 0 4px 24px rgba(26, 96, 128, 0.4);
-}
-
-#weather-card.temp-frais {
-  background-color: #0a2820;
-  border-color: #1a7060;
-  box-shadow: 0 4px 24px rgba(26, 112, 96, 0.35);
-}
-
-#weather-card.temp-doux {
-  background-color: #132a12;
-  border-color: #2a7a28;
-  box-shadow: 0 4px 24px rgba(42, 122, 40, 0.35);
-}
-
-#weather-card.temp-chaud {
-  background-color: #2a1a08;
-  border-color: #a06020;
-  box-shadow: 0 4px 24px rgba(160, 96, 32, 0.4);
-}
-
-#weather-card.temp-tres-chaud {
-  background-color: #2a0e0e;
-  border-color: #a02020;
-  box-shadow: 0 4px 24px rgba(160, 32, 32, 0.45);
-}
+body.temp-glacial    { background-color: #091b3d; }
+body.temp-froid      { background-color: #083045; }
+body.temp-frais      { background-color: #083830; }
+body.temp-doux       { background-color: #0d3508; }
+body.temp-chaud      { background-color: #382005; }
+body.temp-tres-chaud { background-color: #380808; }
 
 /* ===== Utility ===== */
 .hidden {
@@ -344,7 +404,9 @@ footer {
   color: var(--text-secondary);
   font-size: 0.8rem;
   padding: 1rem 1.5rem;
+  position: relative;
   text-align: center;
+  z-index: 2;
 }
 
 /* ===== Responsive ===== */
