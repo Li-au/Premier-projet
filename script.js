@@ -33,28 +33,36 @@ setInterval(updateClocks, 1000);
 // ===== Emoji température =====
 
 const TEMP_EMOJIS = [
-  { max: -10, emoji: '🧊' }, // Grand froid
-  { max: 0,   emoji: '🥶' }, // Gelé
-  { max: 8,   emoji: '🧥' }, // Très froid
-  { max: 15,  emoji: '🌬️' }, // Frais
-  { max: 20,  emoji: '😊' }, // Agréable
-  { max: 26,  emoji: '😎' }, // Chaud
-  { max: 33,  emoji: '🌞' }, // Très chaud
-  { max: Infinity, emoji: '🥵' }, // Canicule
+  { max: -10, emoji: '🧊', cls: 'temp-glacial'    },
+  { max: 0,   emoji: '🥶', cls: 'temp-glacial'    },
+  { max: 8,   emoji: '🧥', cls: 'temp-froid'      },
+  { max: 15,  emoji: '🌬️', cls: 'temp-frais'      },
+  { max: 20,  emoji: '😊', cls: 'temp-doux'       },
+  { max: 26,  emoji: '😎', cls: 'temp-doux'       },
+  { max: 33,  emoji: '🌞', cls: 'temp-chaud'      },
+  { max: Infinity, emoji: '🥵', cls: 'temp-tres-chaud' },
 ];
 
+const TEMP_CLASSES = ['temp-glacial', 'temp-froid', 'temp-frais', 'temp-doux', 'temp-chaud', 'temp-tres-chaud'];
+
 /**
- * Affiche un emoji adapté à la température au centre de l'écran,
- * avec une animation pop-in puis disparition automatique.
+ * Affiche un emoji adapté à la température dans la carte météo,
+ * change la couleur de fond de la carte, et retire l'emoji après l'animation.
  * @param {number} temp — température en °C
  */
 const showTemperatureEmoji = (temp) => {
-  const { emoji } = TEMP_EMOJIS.find(({ max }) => temp < max) || TEMP_EMOJIS.at(-1);
+  const match = TEMP_EMOJIS.find(({ max }) => temp < max) || TEMP_EMOJIS.at(-1);
+  const card = document.getElementById('weather-card');
 
+  // Couleur de fond de la carte
+  TEMP_CLASSES.forEach((c) => card.classList.remove(c));
+  card.classList.add(match.cls);
+
+  // Emoji animé
   const el = document.createElement('div');
   el.className = 'temp-emoji-overlay';
-  el.textContent = emoji;
-  document.getElementById('weather-card').appendChild(el);
+  el.textContent = match.emoji;
+  card.appendChild(el);
 
   el.addEventListener('animationend', () => el.remove(), { once: true });
 };
