@@ -30,6 +30,35 @@ const updateClocks = () => {
 updateClocks();
 setInterval(updateClocks, 1000);
 
+// ===== Emoji température =====
+
+const TEMP_EMOJIS = [
+  { max: -10, emoji: '🧊' }, // Grand froid
+  { max: 0,   emoji: '🥶' }, // Gelé
+  { max: 8,   emoji: '🧥' }, // Très froid
+  { max: 15,  emoji: '🌬️' }, // Frais
+  { max: 20,  emoji: '😊' }, // Agréable
+  { max: 26,  emoji: '😎' }, // Chaud
+  { max: 33,  emoji: '🌞' }, // Très chaud
+  { max: Infinity, emoji: '🥵' }, // Canicule
+];
+
+/**
+ * Affiche un emoji adapté à la température au centre de l'écran,
+ * avec une animation pop-in puis disparition automatique.
+ * @param {number} temp — température en °C
+ */
+const showTemperatureEmoji = (temp) => {
+  const { emoji } = TEMP_EMOJIS.find(({ max }) => temp < max) || TEMP_EMOJIS.at(-1);
+
+  const el = document.createElement('div');
+  el.className = 'temp-emoji-overlay';
+  el.textContent = emoji;
+  document.body.appendChild(el);
+
+  el.addEventListener('animationend', () => el.remove(), { once: true });
+};
+
 // ===== Météo — Open-Meteo (aucune clé API requise) =====
 
 // Correspondance codes météo WMO → description et emoji
@@ -235,6 +264,9 @@ const fetchWeather = async (city) => {
     document.getElementById('weather-temp').textContent = `${Math.round(current.temperature_2m)} °C`;
     document.getElementById('weather-desc').textContent = weather.desc;
     document.getElementById('weather-result').classList.remove('hidden');
+
+    // Animation emoji température
+    showTemperatureEmoji(Math.round(current.temperature_2m));
 
     // Photo de la ville (Wikipedia)
     fetchCityImage(name);
