@@ -79,78 +79,75 @@ const clearWeatherDisplay = () => {
   document.getElementById('weather-result').classList.add('hidden');
 };
 
-// Correspondance code pays ISO → langue Wikipedia
-const COUNTRY_WIKI_LANG = {
-  'FR': 'fr', 'BE': 'fr', 'SN': 'fr', 'CI': 'fr', 'CM': 'fr',
-  'US': 'en', 'GB': 'en', 'AU': 'en', 'NZ': 'en', 'IE': 'en', 'CA': 'en',
-  'DE': 'de', 'AT': 'de',
-  'ES': 'es', 'MX': 'es', 'AR': 'es', 'CO': 'es', 'CL': 'es', 'PE': 'es',
-  'IT': 'it',
-  'PT': 'pt', 'BR': 'pt',
-  'NL': 'nl',
-  'PL': 'pl',
-  'RU': 'ru',
-  'JP': 'ja',
-  'CN': 'zh',
-  'AR': 'ar',
+// Correspondance code pays ISO → portail actualités Wikipedia spécifique au pays
+const COUNTRY_WIKI = {
+  'FR': { lang: 'fr', page: 'Portail:France/Actualit%C3%A9s' },
+  'BE': { lang: 'fr', page: 'Portail:Belgique/Actualit%C3%A9s' },
+  'CH': { lang: 'fr', page: 'Portail:Suisse/Actualit%C3%A9s' },
+  'CA': { lang: 'fr', page: 'Portail:Qu%C3%A9bec/Actualit%C3%A9s' },
+  'SN': { lang: 'fr', page: 'Portail:S%C3%A9n%C3%A9gal/Actualit%C3%A9s' },
+  'US': { lang: 'en', page: 'Portal:United_States/Current_events' },
+  'GB': { lang: 'en', page: 'Portal:United_Kingdom/Current_events' },
+  'AU': { lang: 'en', page: 'Portal:Australia/Current_events' },
+  'DE': { lang: 'de', page: 'Portal:Deutschland/Aktuell' },
+  'AT': { lang: 'de', page: 'Portal:%C3%96sterreich/Aktuell' },
+  'ES': { lang: 'es', page: 'Portal:Espa%C3%B1a/Actualidad' },
+  'MX': { lang: 'es', page: 'Portal:M%C3%A9xico/Actualidad' },
+  'AR': { lang: 'es', page: 'Portal:Argentina/Actualidad' },
+  'IT': { lang: 'it', page: 'Portale:Italia/In_primo_piano' },
+  'PT': { lang: 'pt', page: 'Portal:Portugal/Atualidades' },
+  'BR': { lang: 'pt', page: 'Portal:Brasil/Atualidades' },
+  'JP': { lang: 'ja', page: 'Portal:%E6%97%A5%E6%9C%AC/%E6%99%82%E4%BA%8B%E5%95%8F%E9%A1%8C' },
+  'CN': { lang: 'zh', page: 'Portal:%E4%B8%AD%E5%9B%BD%E5%A4%A7%E9%99%86/%E6%96%B0%E8%81%9E' },
 };
 
+// Portail générique "actualités mondiales" utilisé si le pays n'est pas dans la liste
+const FALLBACK_WIKI = { lang: 'fr', page: 'Portail:Actualit%C3%A9' };
+
 /**
- * Récupère les actualités du jour depuis le fil Wikipedia du pays.
+ * Récupère les actualités du portail Wikipedia spécifique au pays.
+ * Extrait les <li> du contenu de la page et les affiche.
  * @param {string} countryCode — code ISO 2 lettres (ex: "FR", "US")
  * @param {string} countryName — nom du pays affiché dans le titre
  */
 const fetchCountryNews = async (countryCode, countryName) => {
-  const lang = COUNTRY_WIKI_LANG[countryCode] || 'en';
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  const day = String(now.getDate()).padStart(2, '0');
-
+  const wiki = COUNTRY_WIKI[countryCode] || FALLBACK_WIKI;
   const newsCard = document.getElementById('news-card');
   const newsList = document.getElementById('news-list');
 
   try {
-    const url = `https://${lang}.wikipedia.org/api/rest_v1/feed/featured/${year}/${month}/${day}`;
+    const url = `https://${wiki.lang}.wikipedia.org/w/api.php?action=parse&page=${wiki.page}&prop=text&format=json&origin=*`;
     const response = await fetch(url);
-    if (!response.ok) return;
+    if (!response.ok) { newsCard.classList.add('hidden'); return; }
 
     const data = await response.json();
-    if (!data.news || data.news.length === 0) return;
+    if (!data.parse || !data.parse.text) { newsCard.classList.add('hidden'); return; }
+
+    // Parse le HTML retourné par Wikipedia
+    const tmp = document.createElement('div');
+    tmp.innerHTML = data.parse.text['*'];
+
+    // Récupère tous les <li> contenant du texte (au moins 40 caractères)
+    const items = Array.from(tmp.querySelectorAll('li'))
+      .map((el) => el.textContent.trim())
+      .filter((text) => text.length > 40 && !text.startsWith('↑'));
+
+    if (items.length === 0) { newsCard.classList.add('hidden'); return; }
 
     document.getElementById('news-country-name').textContent = countryName;
     newsList.innerHTML = '';
 
-    // Élément temporaire pour extraire le texte depuis le HTML de Wikipedia
-    const tmp = document.createElement('div');
-
-    data.news.slice(0, 5).forEach((item) => {
-      tmp.innerHTML = item.story;
-      const text = tmp.textContent || tmp.innerText || '';
-
+    items.slice(0, 6).forEach((text) => {
       const li = document.createElement('li');
       li.className = 'news-item';
-
-      // Miniature si disponible
-      const thumb = item.links && item.links[0] && item.links[0].thumbnail;
-      if (thumb) {
-        const img = document.createElement('img');
-        img.src = thumb.source;
-        img.alt = '';
-        img.loading = 'lazy';
-        li.appendChild(img);
-      }
-
       const p = document.createElement('p');
-      p.textContent = text.trim();
+      p.textContent = text;
       li.appendChild(p);
-
       newsList.appendChild(li);
     });
 
     newsCard.classList.remove('hidden');
   } catch (error) {
-    // Actualités indisponibles — on masque silencieusement
     newsCard.classList.add('hidden');
   }
 };
@@ -223,7 +220,7 @@ const fetchWeather = async (city) => {
       return;
     }
 
-    const { latitude, longitude, name, country } = geoData.results[0];
+    const { latitude, longitude, name, country, country_code } = geoData.results[0];
 
     // Étape 2 — Météo actuelle
     const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code&wind_speed_unit=kmh&timezone=auto`;
@@ -249,8 +246,8 @@ const fetchWeather = async (city) => {
     // Photo de la ville (Wikipedia)
     fetchCityImage(name);
 
-    // Actualités du pays (Wikipedia)
-    fetchCountryNews(country, geoData.results[0].country);
+    // Actualités du pays (Wikipedia) — country_code = code ISO ex: "FR", "US"
+    fetchCountryNews(country_code, country);
 
   } catch (error) {
     showWeatherError('Impossible de contacter le serveur. Vérifiez votre connexion internet.');
