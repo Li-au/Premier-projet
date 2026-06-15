@@ -79,76 +79,63 @@ const clearWeatherDisplay = () => {
   document.getElementById('weather-result').classList.add('hidden');
 };
 
-// Correspondance code pays ISO → langue Wikipedia
-const COUNTRY_WIKI_LANG = {
+// Correspondance code pays ISO → langue Wikinews
+const COUNTRY_WIKINEWS_LANG = {
   'FR': 'fr', 'BE': 'fr', 'CH': 'fr', 'SN': 'fr', 'CI': 'fr', 'CM': 'fr', 'MA': 'fr',
   'US': 'en', 'GB': 'en', 'AU': 'en', 'NZ': 'en', 'IE': 'en', 'CA': 'en', 'ZA': 'en',
   'DE': 'de', 'AT': 'de',
-  'ES': 'es', 'MX': 'es', 'CO': 'es', 'CL': 'es', 'PE': 'es', 'VE': 'es',
-  'IT': 'it',
-  'PT': 'pt', 'BR': 'pt',
+  'ES': 'es', 'MX': 'es', 'CO': 'es', 'CL': 'es', 'PE': 'es', 'AR': 'es',
+  'IT': 'it', 'PT': 'pt', 'BR': 'pt',
   'NL': 'nl', 'PL': 'pl', 'RU': 'ru', 'JP': 'ja', 'CN': 'zh',
 };
 
 /**
- * Récupère les actualités du jour depuis le fil Wikipedia dans la langue du pays.
- * Essaie aujourd'hui, puis hier si le fil n'est pas encore publié.
+ * Récupère les actualités récentes depuis Wikinews dans la langue du pays,
+ * filtrées par le nom du pays pour n'afficher que des news pertinentes.
  * @param {string} countryCode — code ISO 2 lettres (ex: "FR", "US")
- * @param {string} countryName — nom du pays affiché dans le titre
+ * @param {string} countryName — nom du pays (ex: "France")
  */
 const fetchCountryNews = async (countryCode, countryName) => {
-  const lang = COUNTRY_WIKI_LANG[countryCode] || 'fr';
+  const lang = COUNTRY_WIKINEWS_LANG[countryCode] || 'fr';
   const newsCard = document.getElementById('news-card');
   const newsList = document.getElementById('news-list');
 
-  const buildUrl = (date) => {
-    const y = date.getFullYear();
-    const m = String(date.getMonth() + 1).padStart(2, '0');
-    const d = String(date.getDate()).padStart(2, '0');
-    return `https://${lang}.wikipedia.org/api/rest_v1/feed/featured/${y}/${m}/${d}`;
-  };
-
-  const tryFetch = async (date) => {
-    const response = await fetch(buildUrl(date));
-    if (!response.ok) return null;
-    const data = await response.json();
-    return data.news && data.news.length > 0 ? data.news : null;
-  };
-
   try {
-    const today = new Date();
-    const yesterday = new Date(today);
-    yesterday.setDate(today.getDate() - 1);
+    // Wikinews : recherche des articles récents mentionnant le pays
+    const url = `https://${lang}.wikinews.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(countryName)}&srnamespace=0&srlimit=8&srsort=create_timestamp_desc&format=json&origin=*`;
+    const response = await fetch(url);
+    if (!response.ok) throw new Error('wikinews_error');
 
-    // Essai aujourd'hui, puis hier en fallback
-    const news = (await tryFetch(today)) || (await tryFetch(yesterday));
-    if (!news) { newsCard.classList.add('hidden'); return; }
+    const data = await response.json();
+    const results = data.query && data.query.search;
+    if (!results || results.length === 0) throw new Error('no_results');
 
     document.getElementById('news-country-name').textContent = countryName;
     newsList.innerHTML = '';
 
     const tmp = document.createElement('div');
 
-    news.slice(0, 5).forEach((item) => {
-      tmp.innerHTML = item.story;
-      const text = (tmp.textContent || tmp.innerText || '').trim();
-      if (!text) return;
-
+    results.slice(0, 6).forEach((article) => {
       const li = document.createElement('li');
       li.className = 'news-item';
 
-      const thumb = item.links && item.links[0] && item.links[0].thumbnail;
-      if (thumb) {
-        const img = document.createElement('img');
-        img.src = thumb.source;
-        img.alt = '';
-        img.loading = 'lazy';
-        li.appendChild(img);
+      // Texte principal : titre de l'article
+      const p = document.createElement('p');
+      p.textContent = article.title;
+      li.appendChild(p);
+
+      // Extrait nettoyé du HTML de Wikipedia
+      if (article.snippet) {
+        tmp.innerHTML = article.snippet;
+        const snippetText = (tmp.textContent || '').trim();
+        if (snippetText) {
+          const small = document.createElement('small');
+          small.className = 'news-snippet';
+          small.textContent = snippetText + '…';
+          li.appendChild(small);
+        }
       }
 
-      const p = document.createElement('p');
-      p.textContent = text;
-      li.appendChild(p);
       newsList.appendChild(li);
     });
 

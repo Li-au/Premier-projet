@@ -257,7 +257,16 @@ main {
 .news-item p {
   color: var(--text-primary);
   font-size: 0.9rem;
-  line-height: 1.5;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.news-snippet {
+  color: var(--text-secondary);
+  display: block;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  margin-top: 0.2rem;
 }
 
 /* ===== Utility ===== */
