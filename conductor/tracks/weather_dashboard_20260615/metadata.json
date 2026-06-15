@@ -1,0 +1,8 @@
+{
+  "track_id": "weather_dashboard_20260615",
+  "title": "Dashboard Météo & Horloges — MVP complet",
+  "status": "in_progress",
+  "created_at": "2026-06-15",
+  "tech_stack": ["HTML5", "CSS3", "JavaScript ES6+", "OpenWeatherMap API"],
+  "deployment": "GitHub Pages"
+}
