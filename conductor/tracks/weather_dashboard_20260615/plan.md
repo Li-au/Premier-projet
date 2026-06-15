@@ -32,7 +32,7 @@
 
 ## Phase 5 : Finalisation & Déploiement
 
-- [ ] **T5.1** — Créer `README.md` avec description du projet et instructions pour la clé API
-- [ ] **T5.2** — Créer `.gitignore` (exclure fichiers OS et éditeur)
-- [ ] **T5.3** — Vérification finale : tester la page complète sur mobile (responsive) et desktop
-- [ ] **T5.4** — Publier sur GitHub : créer le dépôt, pousser le code, activer GitHub Pages sur la branche `main`
+- [x] **T5.1** — Créer `README.md` avec description du projet et instructions pour la clé API `f460efe`
+- [x] **T5.2** — Créer `.gitignore` (exclure fichiers OS et éditeur) `f460efe`
+- [x] **T5.3** — Vérification finale : tester la page complète sur mobile (responsive) et desktop `f460efe`
+- [x] **T5.4** — Publier sur GitHub : créer le dépôt, pousser le code, activer GitHub Pages sur la branche `main` `f460efe`
