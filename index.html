@@ -35,14 +35,24 @@
     <section class="card" id="france-clock">
       <h2>🇫🇷 Paris</h2>
       <p class="clock-time" id="france-time">--:--:--</p>
-      <p class="clock-date" id="france-date"></p>
+      <p class="clock-date">
+        <span id="france-date"></span><span class="clock-year" id="france-year"></span>
+      </p>
     </section>
 
     <!-- Carte heure New York -->
     <section class="card" id="ny-clock">
       <h2>🇺🇸 New York</h2>
       <p class="clock-time" id="ny-time">--:--:--</p>
-      <p class="clock-date" id="ny-date"></p>
+      <p class="clock-date">
+        <span id="ny-date"></span><span class="clock-year" id="ny-year"></span>
+      </p>
+    </section>
+
+    <!-- Carte actualités -->
+    <section class="card news-card hidden" id="news-card">
+      <h2>📰 Actualités — <span id="news-country-name"></span></h2>
+      <ul id="news-list" class="news-list"></ul>
     </section>
   </main>
 

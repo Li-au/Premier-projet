@@ -8,18 +8,23 @@ const updateClocks = () => {
 
   const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
   const dateOptions = { weekday: 'long', day: 'numeric', month: 'long' };
+  const yearOptions = { year: 'numeric' };
 
   // Heure Paris
   document.getElementById('france-time').textContent =
     new Intl.DateTimeFormat('fr-FR', { ...timeOptions, timeZone: 'Europe/Paris' }).format(now);
   document.getElementById('france-date').textContent =
     new Intl.DateTimeFormat('fr-FR', { ...dateOptions, timeZone: 'Europe/Paris' }).format(now);
+  document.getElementById('france-year').textContent =
+    new Intl.DateTimeFormat('fr-FR', { ...yearOptions, timeZone: 'Europe/Paris' }).format(now);
 
   // Heure New York
   document.getElementById('ny-time').textContent =
     new Intl.DateTimeFormat('fr-FR', { ...timeOptions, timeZone: 'America/New_York' }).format(now);
   document.getElementById('ny-date').textContent =
     new Intl.DateTimeFormat('en-US', { ...dateOptions, timeZone: 'America/New_York' }).format(now);
+  document.getElementById('ny-year').textContent =
+    new Intl.DateTimeFormat('en-US', { ...yearOptions, timeZone: 'America/New_York' }).format(now);
 };
 
 updateClocks();
@@ -72,6 +77,82 @@ const showWeatherError = (message) => {
 const clearWeatherDisplay = () => {
   document.getElementById('weather-error').classList.add('hidden');
   document.getElementById('weather-result').classList.add('hidden');
+};
+
+// Correspondance code pays ISO → langue Wikipedia
+const COUNTRY_WIKI_LANG = {
+  'FR': 'fr', 'BE': 'fr', 'SN': 'fr', 'CI': 'fr', 'CM': 'fr',
+  'US': 'en', 'GB': 'en', 'AU': 'en', 'NZ': 'en', 'IE': 'en', 'CA': 'en',
+  'DE': 'de', 'AT': 'de',
+  'ES': 'es', 'MX': 'es', 'AR': 'es', 'CO': 'es', 'CL': 'es', 'PE': 'es',
+  'IT': 'it',
+  'PT': 'pt', 'BR': 'pt',
+  'NL': 'nl',
+  'PL': 'pl',
+  'RU': 'ru',
+  'JP': 'ja',
+  'CN': 'zh',
+  'AR': 'ar',
+};
+
+/**
+ * Récupère les actualités du jour depuis le fil Wikipedia du pays.
+ * @param {string} countryCode — code ISO 2 lettres (ex: "FR", "US")
+ * @param {string} countryName — nom du pays affiché dans le titre
+ */
+const fetchCountryNews = async (countryCode, countryName) => {
+  const lang = COUNTRY_WIKI_LANG[countryCode] || 'en';
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+
+  const newsCard = document.getElementById('news-card');
+  const newsList = document.getElementById('news-list');
+
+  try {
+    const url = `https://${lang}.wikipedia.org/api/rest_v1/feed/featured/${year}/${month}/${day}`;
+    const response = await fetch(url);
+    if (!response.ok) return;
+
+    const data = await response.json();
+    if (!data.news || data.news.length === 0) return;
+
+    document.getElementById('news-country-name').textContent = countryName;
+    newsList.innerHTML = '';
+
+    // Élément temporaire pour extraire le texte depuis le HTML de Wikipedia
+    const tmp = document.createElement('div');
+
+    data.news.slice(0, 5).forEach((item) => {
+      tmp.innerHTML = item.story;
+      const text = tmp.textContent || tmp.innerText || '';
+
+      const li = document.createElement('li');
+      li.className = 'news-item';
+
+      // Miniature si disponible
+      const thumb = item.links && item.links[0] && item.links[0].thumbnail;
+      if (thumb) {
+        const img = document.createElement('img');
+        img.src = thumb.source;
+        img.alt = '';
+        img.loading = 'lazy';
+        li.appendChild(img);
+      }
+
+      const p = document.createElement('p');
+      p.textContent = text.trim();
+      li.appendChild(p);
+
+      newsList.appendChild(li);
+    });
+
+    newsCard.classList.remove('hidden');
+  } catch (error) {
+    // Actualités indisponibles — on masque silencieusement
+    newsCard.classList.add('hidden');
+  }
 };
 
 /**
@@ -167,6 +248,9 @@ const fetchWeather = async (city) => {
 
     // Photo de la ville (Wikipedia)
     fetchCityImage(name);
+
+    // Actualités du pays (Wikipedia)
+    fetchCountryNews(country, geoData.results[0].country);
 
   } catch (error) {
     showWeatherError('Impossible de contacter le serveur. Vérifiez votre connexion internet.');
