@@ -2,12 +2,17 @@ const PLAYER_SIZE = 30;
 const PLAYER_X = 80;
 const PLAYER_COLOR = '#f5a623';
 const GROUND_COLOR = '#1d1f27';
+const GROUND_MARK_COLOR = '#34384a';
+const GROUND_MARK_SPACING = 60;
+const GROUND_MARK_WIDTH = 4;
+const WORLD_SPEED = 0.25;
 
 const canvas = document.getElementById('game-canvas');
 const ctx = canvas.getContext('2d');
 
 let state = {elapsedTime: 0};
 let player = {y: GROUND_Y, velocityY: 0, onGround: true};
+let worldOffset = 0;
 let jumpRequested = false;
 let lastTimestamp = null;
 
@@ -27,6 +32,7 @@ canvas.addEventListener('click', requestJump);
 function update(dt) {
   state = updateGameTime(state, dt);
   player = updatePlayerPhysics(player, dt, {jumpPressed: jumpRequested});
+  worldOffset = advanceWorld(worldOffset, dt, WORLD_SPEED);
   jumpRequested = false;
 }
 
@@ -36,6 +42,12 @@ function render() {
   const groundLineY = GROUND_Y + PLAYER_SIZE;
   ctx.fillStyle = GROUND_COLOR;
   ctx.fillRect(0, groundLineY, canvas.width, canvas.height - groundLineY);
+
+  ctx.fillStyle = GROUND_MARK_COLOR;
+  const scrolledOffset = worldOffset % GROUND_MARK_SPACING;
+  for (let x = -scrolledOffset; x < canvas.width; x += GROUND_MARK_SPACING) {
+    ctx.fillRect(x, groundLineY, GROUND_MARK_WIDTH, canvas.height - groundLineY);
+  }
 
   ctx.fillStyle = PLAYER_COLOR;
   ctx.fillRect(PLAYER_X, player.y, PLAYER_SIZE, PLAYER_SIZE);
