@@ -8,17 +8,27 @@ const GROUND_MARK_WIDTH = 4;
 const WORLD_SPEED = 0.4;
 const ROTATION_SPEED = 0.006;
 const OBSTACLE_COLOR = '#e44d4d';
+const TEXT_COLOR = '#f4f4f4';
 
 const canvas = document.getElementById('game-canvas');
 const ctx = canvas.getContext('2d');
 
-let state = {elapsedTime: 0};
-let player = {y: GROUND_Y, velocityY: 0, onGround: true};
-let worldOffset = 0;
-let playerRotation = 0;
+let state;
+let player;
+let worldOffset;
+let playerRotation;
 let jumpRequested = false;
 let lastTimestamp = null;
-let gameState = 'playing';
+let gameState = 'title';
+
+function resetGame() {
+  state = {elapsedTime: 0};
+  player = {y: GROUND_Y, velocityY: 0, onGround: true};
+  worldOffset = 0;
+  playerRotation = 0;
+}
+
+resetGame();
 
 function getPlayerRect() {
   return {x: PLAYER_X, y: player.y, width: PLAYER_SIZE, height: PLAYER_SIZE};
@@ -33,18 +43,25 @@ function getObstacleRect(obstacle, groundLineY) {
   };
 }
 
-function requestJump() {
-  jumpRequested = true;
+function requestAction() {
+  const previousState = gameState;
+  const nextState = transitionGameState(previousState, 'ACTION_PRESSED');
+  if (nextState === 'playing' && previousState !== 'playing') {
+    resetGame();
+  } else if (previousState === 'playing') {
+    jumpRequested = true;
+  }
+  gameState = nextState;
 }
 
 window.addEventListener('keydown', (event) => {
   if (event.code === 'Space') {
     event.preventDefault();
-    requestJump();
+    requestAction();
   }
 });
 
-canvas.addEventListener('click', requestJump);
+canvas.addEventListener('click', requestAction);
 
 function update(dt) {
   if (gameState !== 'playing') {
@@ -68,15 +85,13 @@ function update(dt) {
   const visibleObstacles = getVisibleObstacles(LEVEL, worldOffset, canvas.width);
   for (const obstacle of visibleObstacles) {
     if (checkCollision(playerRect, getObstacleRect(obstacle, groundLineY))) {
-      gameState = 'game_over';
+      gameState = transitionGameState(gameState, 'COLLISION');
       break;
     }
   }
 }
 
-function render() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+function renderWorld() {
   const groundLineY = GROUND_Y + PLAYER_SIZE;
   ctx.fillStyle = GROUND_COLOR;
   ctx.fillRect(0, groundLineY, canvas.width, canvas.height - groundLineY);
@@ -106,6 +121,26 @@ function render() {
   ctx.fillStyle = PLAYER_COLOR;
   ctx.fillRect(-PLAYER_SIZE / 2, -PLAYER_SIZE / 2, PLAYER_SIZE, PLAYER_SIZE);
   ctx.restore();
+}
+
+function renderOverlayText(lines) {
+  ctx.fillStyle = TEXT_COLOR;
+  ctx.textAlign = 'center';
+  ctx.font = '32px sans-serif';
+  ctx.fillText(lines[0], canvas.width / 2, canvas.height / 2 - 10);
+  ctx.font = '16px sans-serif';
+  ctx.fillText(lines[1], canvas.width / 2, canvas.height / 2 + 20);
+}
+
+function render() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  renderWorld();
+
+  if (gameState === 'title') {
+    renderOverlayText(['CUBE DASH', 'Espace ou clic pour commencer']);
+  } else if (gameState === 'game_over') {
+    renderOverlayText(['Game Over', 'Espace ou clic pour recommencer']);
+  }
 }
 
 function tick(timestamp) {
