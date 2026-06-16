@@ -64,8 +64,8 @@ Test runner : Node.js natif (`node --test`), aucune dépendance externe, conform
 
 Extension de scope décidée le 2026-06-16 (voir `spec.md`).
 
-- [ ] **Tâche 6.1 :** Écrire les tests pour la définition de 5 niveaux fixes (`LEVELS`, agencements d'obstacles différents, vitesse et espacement progressifs) et une fonction `getLevel(id)`
-- [ ] **Tâche 6.2 :** Implémenter `LEVELS` (5 niveaux à difficulté progressive) et `getLevel(id)`
+- [x] **Tâche 6.1 :** Écrire les tests pour la définition de 5 niveaux fixes (`LEVELS`, agencements d'obstacles différents, vitesse et espacement progressifs) et une fonction `getLevel(id)` `[d7b9609]`
+- [x] **Tâche 6.2 :** Implémenter `LEVELS` (5 niveaux à difficulté progressive) et `getLevel(id)` `[d7b9609]`
 - [ ] **Tâche 6.3 :** Écrire les tests pour l'extension de la machine d'état (`title → level_select → playing`, `LEVEL_SELECTED` avec un id de niveau)
 - [ ] **Tâche 6.4 :** Implémenter l'extension de la machine d'état et le branchement du niveau choisi dans `game.js` (vitesse/obstacles dépendent du niveau sélectionné)
 - [ ] **Tâche 6.5 :** Écrire les tests pour une fonction pure de disposition de la grille de sélection (`getLevelGridLayout(numLevels, screenWidth)` → positions des cases)
