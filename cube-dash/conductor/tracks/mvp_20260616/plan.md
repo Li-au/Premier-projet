@@ -76,9 +76,26 @@ Extension de scope décidée le 2026-06-16 (voir `spec.md`).
 
 ---
 
-## Phase 7 — Déploiement
+## Phase 7 — Plateformes flottantes et blocs solides
 
-- [ ] **Tâche 7.1 :** Vérifier que le jeu fonctionne en ouverture directe de `index.html` (file://) sans erreur console
-- [ ] **Tâche 7.2 :** Configurer et déployer sur GitHub Pages, vérifier l'accès via le lien public
+Extension de scope décidée le 2026-06-16 (voir `spec.md`) : niveaux avec du relief façon Geometry Dash (plateformes en hauteur à atteindre en sautant, blocs solides pouvant aussi servir d'obstacles mortels).
+
+- [ ] **Tâche 7.1 :** Écrire les tests pour `resolvePlayerPhysics(player, dt, input, platforms)` : atterrissage sur la plateforme la plus proche en dessous, sol toujours présent comme filet de sécurité, perte d'appui en quittant une plateforme (chute)
+- [ ] **Tâche 7.2 :** Implémenter `resolvePlayerPhysics` (remplace `updatePlayerPhysics`) et mettre à jour `game.js`
+- [ ] **Tâche 7.3 :** Écrire les tests pour la définition de plateformes dans un niveau (`level.platforms`) et leur passage en coordonnées écran (réutilise `getVisibleObstacles`, déjà générique)
+- [ ] **Tâche 7.4 :** Implémenter le rendu des plateformes (rectangles flat, distincts du sol/joueur/obstacles) et calculer les plateformes visibles à passer à `resolvePlayerPhysics` dans `game.js`
+- [ ] **Tâche 7.5 :** Écrire les tests pour les obstacles de type "bloc" (rectangle mortel, en plus des spikes triangulaires)
+- [ ] **Tâche 7.6 :** Implémenter le rendu des blocs-obstacles et les inclure dans la détection de collision mortelle
+- [ ] **Tâche 7.7 :** Enrichir les 5 niveaux avec des sections plateformes/escaliers et quelques blocs-obstacles
+- [ ] **Tâche 7.8 :** Vérification manuelle complète et ajustements de gameplay (hauteur de saut cohérente avec les plateformes, espacement jouable)
 
 ### Phase Completion Checkpoint — Phase 7
+
+---
+
+## Phase 8 — Déploiement
+
+- [ ] **Tâche 8.1 :** Vérifier que le jeu fonctionne en ouverture directe de `index.html` (file://) sans erreur console
+- [ ] **Tâche 8.2 :** Configurer et déployer sur GitHub Pages, vérifier l'accès via le lien public
+
+### Phase Completion Checkpoint — Phase 8

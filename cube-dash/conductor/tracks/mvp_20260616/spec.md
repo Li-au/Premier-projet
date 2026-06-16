@@ -26,10 +26,20 @@ Décidé en cours de track, avant le déploiement : ajout d'un écran de sélect
 - Les 5 niveaux ont des agencements d'obstacles différents et une difficulté progressive (vitesse de défilement croissante, espacement des obstacles décroissant du niveau 1 au niveau 5)
 - Après un Game Over, l'espace/clic relance le **même niveau** depuis le début (pas de retour automatique à la sélection pour le MVP)
 
+## Extension de scope (2026-06-16) : plateformes flottantes et blocs solides
+
+Décidé en cours de track : le terrain n'est plus uniquement un sol plat avec des spikes. Les niveaux peuvent inclure :
+
+- Des **plateformes flottantes** à différentes hauteurs, sur lesquelles le joueur atterrit en sautant (avec du vide en dessous/au-dessus, contrairement à un simple changement de hauteur du sol)
+- Des **blocs solides mortels** : visuellement des rectangles (au lieu des triangles des spikes), mais qui tuent au contact comme un spike
+
+Cela nécessite de généraliser la physique du joueur (`updatePlayerPhysics`) pour qu'elle résolve l'atterrissage sur la plateforme la plus proche en dessous du joueur (en plus du sol, toujours présent comme filet de sécurité), plutôt que sur une seule hauteur de sol fixe.
+
 ## Hors scope
 
 - Éditeur de niveaux
 - Retour à la sélection de niveau après un Game Over (relance le même niveau)
+- Collision par le dessous/les côtés d'une plateforme (le joueur ne peut interagir qu'avec le dessus d'une plateforme ; passer dessous ou la traverser latéralement ne déclenche pas de collision spécifique)
 - Musique synchronisée, power-ups
 - Score persistant / leaderboard
 
