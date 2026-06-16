@@ -49,7 +49,7 @@ Test runner : Node.js natif (`node --test`), aucune dépendance externe, conform
 
 ---
 
-## Phase 5 — Habillage visuel et écran titre
+## Phase 5 — Habillage visuel et écran titre `[checkpoint: f280659]`
 
 - [x] **Tâche 5.1 :** Écrire les tests pour une fonction pure `getPlayerColor(elapsedTime|distance)` qui retourne une couleur progressive `[b02a915]`
 - [x] **Tâche 5.2 :** Implémenter `getPlayerColor` et l'appliquer au rendu du joueur `[04cce6f]`
