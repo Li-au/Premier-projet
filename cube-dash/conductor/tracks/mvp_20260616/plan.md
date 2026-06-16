@@ -18,8 +18,8 @@ Test runner : Node.js natif (`node --test`), aucune dépendance externe, conform
 
 ## Phase 2 — Physique du joueur (gravité, saut)
 
-- [ ] **Tâche 2.1 :** Écrire les tests pour une fonction pure `updatePlayerPhysics(player, dt, input)` : gravité appliquée en l'air, saut déclenché au sol, position clampée au sol
-- [ ] **Tâche 2.2 :** Implémenter `updatePlayerPhysics`
+- [x] **Tâche 2.1 :** Écrire les tests pour une fonction pure `updatePlayerPhysics(player, dt, input)` : gravité appliquée en l'air, saut déclenché au sol, position clampée au sol `[0fde645]`
+- [x] **Tâche 2.2 :** Implémenter `updatePlayerPhysics` `[0fde645]`
 - [ ] **Tâche 2.3 :** Brancher les contrôles (espace + clic) sur l'impulsion de saut
 - [ ] **Tâche 2.4 :** Dessiner le joueur (carré) et le sol sur le canvas
 
