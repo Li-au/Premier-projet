@@ -1,69 +1,50 @@
-function buildObstacles(startX, spacing, count) {
-  const obstacles = [];
-  for (let i = 0; i < count; i++) {
-    obstacles.push({type: 'spike', worldX: startX + i * spacing, width: 30, height: 30});
-  }
-  return obstacles;
-}
+const GAP_MULTIPLIERS = [
+  1.0, 1.6, 0.5, 1.3, 0.8, 1.7, 0.6, 1.1, 0.9, 1.4, 0.55, 1.5, 0.7, 1.2, 0.95, 1.65, 0.6, 1.05,
+];
 
 function buildSpike(worldX) {
   return {type: 'spike', worldX, width: 30, height: 30};
 }
 
-function buildBlock(worldX, width, height) {
-  return {type: 'block', worldX, width, height};
+function buildBlock(worldX) {
+  return {type: 'block', worldX, width: 40, height: 50};
 }
 
+/**
+ * Builds a sequence of obstacles with irregular (non-uniform) spacing
+ * derived from GAP_MULTIPLIERS scaled by baseGap, mixing spikes with
+ * periodic climbable blocks (every `blockEvery`-th obstacle) spread
+ * throughout the level rather than bunched at the end.
+ *
+ * @param {number} startX World x of the first obstacle.
+ * @param {number} baseGap Average gap in pixels between obstacles.
+ * @param {number} totalCount Total number of obstacles to generate.
+ * @param {number} blockEvery Every Nth obstacle is a block instead of a spike.
+ * @return {{obstacles: Array<Object>, finishX: number}}
+ */
+function buildVariedLevel(startX, baseGap, totalCount, blockEvery) {
+  const obstacles = [];
+  let x = startX;
+  for (let i = 0; i < totalCount; i++) {
+    const isBlock = (i + 1) % blockEvery === 0;
+    obstacles.push(isBlock ? buildBlock(x) : buildSpike(x));
+    x += baseGap * GAP_MULTIPLIERS[i % GAP_MULTIPLIERS.length];
+  }
+  return {obstacles, finishX: x + baseGap};
+}
+
+const level1 = buildVariedLevel(500, 320, 12, 4);
+const level2 = buildVariedLevel(500, 290, 13, 4);
+const level3 = buildVariedLevel(500, 260, 14, 4);
+const level4 = buildVariedLevel(500, 230, 15, 4);
+const level5 = buildVariedLevel(500, 200, 16, 4);
+
 const LEVELS = [
-  {
-    id: 1,
-    name: 'Niveau 1',
-    speed: 0.3,
-    obstacles: [
-      buildSpike(500),
-      buildSpike(1000),
-      buildSpike(1500),
-      buildSpike(2000),
-      buildSpike(2500),
-      buildSpike(3000),
-      buildBlock(3500, 40, 50),
-      buildBlock(4000, 40, 50),
-    ],
-    platforms: [],
-    finishX: 4300,
-  },
-  {
-    id: 2,
-    name: 'Niveau 2',
-    speed: 0.35,
-    obstacles: [...buildObstacles(500, 450, 7), buildBlock(3650, 40, 50)],
-    platforms: [],
-    finishX: 3950,
-  },
-  {
-    id: 3,
-    name: 'Niveau 3',
-    speed: 0.4,
-    obstacles: [...buildObstacles(500, 400, 8), buildBlock(3700, 40, 50)],
-    platforms: [],
-    finishX: 4000,
-  },
-  {
-    id: 4,
-    name: 'Niveau 4',
-    speed: 0.45,
-    obstacles: [...buildObstacles(500, 350, 9), buildBlock(3650, 40, 50)],
-    platforms: [],
-    finishX: 3950,
-  },
-  {
-    id: 5,
-    name: 'Niveau 5',
-    speed: 0.5,
-    obstacles: [...buildObstacles(500, 300, 10), buildBlock(3500, 40, 50)],
-    platforms: [],
-    finishX: 3800,
-  },
+  {id: 1, name: 'Niveau 1', speed: 0.3, ...level1, platforms: []},
+  {id: 2, name: 'Niveau 2', speed: 0.35, ...level2, platforms: []},
+  {id: 3, name: 'Niveau 3', speed: 0.4, ...level3, platforms: []},
+  {id: 4, name: 'Niveau 4', speed: 0.45, ...level4, platforms: []},
+  {id: 5, name: 'Niveau 5', speed: 0.5, ...level5, platforms: []},
 ];
 
 /**
