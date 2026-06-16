@@ -1,4 +1,3 @@
-const PLAYER_SIZE = 30;
 const PLAYER_X = 80;
 const GROUND_COLOR = '#4caf6e';
 const GROUND_MARK_COLOR = '#3d8e59';
@@ -40,7 +39,7 @@ function resetGame() {
 resetGame();
 
 function getPlayerRect() {
-  return {x: PLAYER_X, y: player.y, width: PLAYER_SIZE, height: PLAYER_SIZE};
+  return {x: PLAYER_X, y: player.y, width: PLAYER_HEIGHT, height: PLAYER_HEIGHT};
 }
 
 function getLevelGridCells() {
@@ -189,7 +188,7 @@ function update(dt) {
   }
 
   state = updateGameTime(state, dt);
-  player = updatePlayerPhysics(player, dt, {jumpPressed: jumpRequested});
+  player = resolvePlayerPhysics(player, dt, {jumpPressed: jumpRequested}, []);
   worldOffset = advanceWorld(worldOffset, dt, currentLevel.speed);
   jumpRequested = false;
 
@@ -199,7 +198,7 @@ function update(dt) {
     playerRotation += ROTATION_SPEED * dt;
   }
 
-  const groundLineY = GROUND_Y + PLAYER_SIZE;
+  const groundLineY = GROUND_Y + PLAYER_HEIGHT;
   const playerRect = getPlayerRect();
   const visibleObstacles = getVisibleObstacles(currentLevel.obstacles, worldOffset, canvas.width);
   for (const obstacle of visibleObstacles) {
@@ -234,7 +233,7 @@ function renderBackground(groundLineY) {
 }
 
 function renderWorld() {
-  const groundLineY = GROUND_Y + PLAYER_SIZE;
+  const groundLineY = GROUND_Y + PLAYER_HEIGHT;
   renderBackground(groundLineY);
 
   ctx.fillStyle = GROUND_COLOR;
@@ -257,13 +256,13 @@ function renderWorld() {
     ctx.fill();
   }
 
-  const playerCenterX = PLAYER_X + PLAYER_SIZE / 2;
-  const playerCenterY = player.y + PLAYER_SIZE / 2;
+  const playerCenterX = PLAYER_X + PLAYER_HEIGHT / 2;
+  const playerCenterY = player.y + PLAYER_HEIGHT / 2;
   ctx.save();
   ctx.translate(playerCenterX, playerCenterY);
   ctx.rotate(playerRotation);
   ctx.fillStyle = getPlayerColor(state.elapsedTime);
-  ctx.fillRect(-PLAYER_SIZE / 2, -PLAYER_SIZE / 2, PLAYER_SIZE, PLAYER_SIZE);
+  ctx.fillRect(-PLAYER_HEIGHT / 2, -PLAYER_HEIGHT / 2, PLAYER_HEIGHT, PLAYER_HEIGHT);
   ctx.restore();
 }
 
