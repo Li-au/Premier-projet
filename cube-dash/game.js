@@ -212,6 +212,11 @@ function update(dt) {
       break;
     }
   }
+
+  if (gameState === 'playing' &&
+      hasReachedFinish(worldOffset, currentLevel.finishX, PLAYER_X)) {
+    gameState = transitionGameState(gameState, 'LEVEL_COMPLETE');
+  }
 }
 
 function renderHillRow(color, baseY, amplitude, spacing, parallaxOffset) {
@@ -344,6 +349,8 @@ function render() {
     renderPauseMenu();
   } else if (gameState === 'game_over') {
     renderOverlayText('Game Over', 'Espace ou clic pour recommencer');
+  } else if (gameState === 'level_complete') {
+    renderOverlayText('Niveau terminé !', 'Espace ou clic pour choisir un niveau');
   } else if (gameState === 'playing') {
     ctx.fillStyle = TEXT_COLOR;
     ctx.textAlign = 'left';
