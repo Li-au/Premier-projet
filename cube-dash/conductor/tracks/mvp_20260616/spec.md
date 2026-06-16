@@ -43,6 +43,13 @@ Décidé en cours de track : chaque niveau a désormais une fin explicite (ligne
 - Atteindre cette position déclenche un état "Niveau terminé", avec un écran dédié
 - Depuis cet écran, l'espace/clic ramène à la sélection de niveau (pas de progression automatique au niveau suivant pour le MVP)
 
+## Extension de scope (2026-06-16) : niveaux plus longs et barre de progression
+
+Décidé en cours de track :
+
+- Une barre de progression s'affiche en haut de l'écran pendant le jeu, indiquant le pourcentage d'avancement vers la fin du niveau (`finishX`)
+- Tous les niveaux sont allongés (davantage d'obstacles, parcours plus long), en conservant la garantie d'équité physique des écarts entre obstacles déjà établie
+
 ## Hors scope
 
 - Éditeur de niveaux
