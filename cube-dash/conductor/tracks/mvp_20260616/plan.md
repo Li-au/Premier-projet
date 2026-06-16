@@ -87,7 +87,7 @@ Extension de scope décidée le 2026-06-16 (voir `spec.md`) : niveaux avec du re
 - [x] **Tâche 7.5 :** Écrire les tests pour les obstacles de type "bloc" (rectangle mortel, en plus des spikes triangulaires) `[9c3e107]`
 - [x] **Tâche 7.6 :** Implémenter le rendu des blocs-obstacles et les inclure dans la détection de collision mortelle `[58445c9]`
 - [x] **Tâche 7.7 :** Enrichir les 5 niveaux avec des sections plateformes/escaliers et quelques blocs-obstacles `[9bd9e54]`
-- [ ] **Tâche 7.8 :** Vérification manuelle complète et ajustements de gameplay (hauteur de saut cohérente avec les plateformes, espacement jouable)
+- [x] **Tâche 7.8 :** Vérification manuelle complète et ajustements de gameplay (hauteur de saut cohérente avec les plateformes, espacement jouable) `[verified]`
 
 ### Phase Completion Checkpoint — Phase 7
 
