@@ -16,7 +16,7 @@ Test runner : Node.js natif (`node --test`), aucune dépendance externe, conform
 
 ---
 
-## Phase 2 — Physique du joueur (gravité, saut)
+## Phase 2 — Physique du joueur (gravité, saut) `[checkpoint: 2728159]`
 
 - [x] **Tâche 2.1 :** Écrire les tests pour une fonction pure `updatePlayerPhysics(player, dt, input)` : gravité appliquée en l'air, saut déclenché au sol, position clampée au sol `[0fde645]`
 - [x] **Tâche 2.2 :** Implémenter `updatePlayerPhysics` `[0fde645]`
