@@ -85,7 +85,7 @@ Extension de scope décidée le 2026-06-16 (voir `spec.md`) : niveaux avec du re
 - [x] **Tâche 7.3 :** Écrire les tests pour la définition de plateformes dans un niveau (`level.platforms`) et leur passage en coordonnées écran (réutilise `getVisibleObstacles`, déjà générique) `[5105c45]`
 - [x] **Tâche 7.4 :** Implémenter le rendu des plateformes (rectangles flat, distincts du sol/joueur/obstacles) et calculer les plateformes visibles à passer à `resolvePlayerPhysics` dans `game.js` `[05284a8]`
 - [x] **Tâche 7.5 :** Écrire les tests pour les obstacles de type "bloc" (rectangle mortel, en plus des spikes triangulaires) `[9c3e107]`
-- [ ] **Tâche 7.6 :** Implémenter le rendu des blocs-obstacles et les inclure dans la détection de collision mortelle
+- [x] **Tâche 7.6 :** Implémenter le rendu des blocs-obstacles et les inclure dans la détection de collision mortelle `[58445c9]`
 - [ ] **Tâche 7.7 :** Enrichir les 5 niveaux avec des sections plateformes/escaliers et quelques blocs-obstacles
 - [ ] **Tâche 7.8 :** Vérification manuelle complète et ajustements de gameplay (hauteur de saut cohérente avec les plateformes, espacement jouable)
 
