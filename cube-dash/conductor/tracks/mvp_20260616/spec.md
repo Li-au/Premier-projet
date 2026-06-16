@@ -31,9 +31,9 @@ Décidé en cours de track, avant le déploiement : ajout d'un écran de sélect
 Décidé en cours de track : le terrain n'est plus uniquement un sol plat avec des spikes. Les niveaux peuvent inclure :
 
 - Des **plateformes flottantes** à différentes hauteurs, sur lesquelles le joueur atterrit en sautant (avec du vide en dessous/au-dessus, contrairement à un simple changement de hauteur du sol)
-- Des **blocs solides mortels** : visuellement des rectangles (au lieu des triangles des spikes), mais qui tuent au contact comme un spike
+- Des **blocs solides au sol** : visuellement des rectangles (au lieu des triangles des spikes), qu'on doit escalader en sautant dessus avant d'y arriver. Ils ne sont pas mortels au contact du dessus (le joueur peut se poser dessus comme sur une plateforme), mais une collision sur le côté/dessous (le joueur ne sautant pas à temps) déclenche un Game Over, exactement comme un spike
 
-Cela nécessite de généraliser la physique du joueur (`updatePlayerPhysics`) pour qu'elle résolve l'atterrissage sur la plateforme la plus proche en dessous du joueur (en plus du sol, toujours présent comme filet de sécurité), plutôt que sur une seule hauteur de sol fixe.
+Cela nécessite de généraliser la physique du joueur (`resolvePlayerPhysics`, anciennement `updatePlayerPhysics`) pour qu'elle résolve l'atterrissage sur la plateforme la plus proche en dessous du joueur (en plus du sol, toujours présent comme filet de sécurité), plutôt que sur une seule hauteur de sol fixe. Les blocs solides contribuent à la fois à la liste des plateformes (pour l'atterrissage) et à la liste des obstacles (pour la détection de collision mortelle) ; le comportement "safe si posé dessus, mortel sinon" émerge naturellement de ces deux mécanismes combinés, sans logique de collision spécifique supplémentaire.
 
 ## Hors scope
 
