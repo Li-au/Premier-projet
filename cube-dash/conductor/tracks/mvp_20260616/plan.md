@@ -27,7 +27,7 @@ Test runner : Node.js natif (`node --test`), aucune dépendance externe, conform
 
 ---
 
-## Phase 3 — Défilement et obstacles
+## Phase 3 — Défilement et obstacles `[checkpoint: 7e15f57]`
 
 - [x] **Tâche 3.1 :** Écrire les tests pour une fonction pure `advanceWorld(worldOffset, dt, speed)` qui fait progresser le défilement `[9c22805]`
 - [x] **Tâche 3.2 :** Implémenter le défilement horizontal du décor (sol + fond) `[4cb0ee0]`
