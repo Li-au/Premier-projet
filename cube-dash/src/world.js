@@ -8,6 +8,17 @@ function advanceWorld(worldOffset, dt, speed) {
   return worldOffset + speed * dt;
 }
 
+/**
+ * @param {number} worldOffset Current horizontal scroll offset.
+ * @param {number} finishX World x position of the level's finish line.
+ * @param {number} playerX Player's fixed x position on screen.
+ * @return {boolean} True once the finish line has scrolled up to or past
+ *     the player.
+ */
+function hasReachedFinish(worldOffset, finishX, playerX) {
+  return finishX - worldOffset <= playerX;
+}
+
 if (typeof module !== 'undefined') {
-  module.exports = {advanceWorld};
+  module.exports = {advanceWorld, hasReachedFinish};
 }
