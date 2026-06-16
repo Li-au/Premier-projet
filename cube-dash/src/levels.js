@@ -1,9 +1,13 @@
 function buildObstacles(startX, spacing, count) {
   const obstacles = [];
   for (let i = 0; i < count; i++) {
-    obstacles.push({worldX: startX + i * spacing, width: 30, height: 30});
+    obstacles.push({type: 'spike', worldX: startX + i * spacing, width: 30, height: 30});
   }
   return obstacles;
+}
+
+function buildBlock(worldX, width, height) {
+  return {type: 'block', worldX, width, height};
 }
 
 const LEVELS = [
@@ -11,7 +15,7 @@ const LEVELS = [
     id: 1,
     name: 'Niveau 1',
     speed: 0.3,
-    obstacles: buildObstacles(500, 500, 6),
+    obstacles: [...buildObstacles(500, 500, 6), buildBlock(3300, 40, 50)],
     platforms: [{worldX: 900, width: 120, top: 285}],
   },
   {

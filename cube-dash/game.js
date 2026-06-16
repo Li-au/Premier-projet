@@ -181,8 +181,18 @@ function update(dt) {
   }
 
   state = updateGameTime(state, dt);
+
+  const groundLineY = GROUND_Y + PLAYER_HEIGHT;
+  const blockPlatforms = currentLevel.obstacles
+      .filter((obstacle) => obstacle.type === 'block')
+      .map((obstacle) => ({
+        worldX: obstacle.worldX,
+        width: obstacle.width,
+        top: groundLineY - obstacle.height,
+      }));
+  const allPlatforms = [...currentLevel.platforms, ...blockPlatforms];
   const platformsUnderPlayer = getPlatformsUnderPlayer(
-      currentLevel.platforms, worldOffset, PLAYER_X, PLAYER_HEIGHT);
+      allPlatforms, worldOffset, PLAYER_X, PLAYER_HEIGHT);
   player = resolvePlayerPhysics(
       player, dt, {jumpPressed: jumpRequested}, platformsUnderPlayer);
   worldOffset = advanceWorld(worldOffset, dt, currentLevel.speed);
@@ -194,7 +204,6 @@ function update(dt) {
     playerRotation += ROTATION_SPEED * dt;
   }
 
-  const groundLineY = GROUND_Y + PLAYER_HEIGHT;
   const playerRect = getPlayerRect();
   const visibleObstacles = getVisibleObstacles(currentLevel.obstacles, worldOffset, canvas.width);
   for (const obstacle of visibleObstacles) {
@@ -250,12 +259,16 @@ function renderWorld() {
   ctx.fillStyle = OBSTACLE_COLOR;
   const visibleObstacles = getVisibleObstacles(currentLevel.obstacles, worldOffset, canvas.width);
   for (const obstacle of visibleObstacles) {
-    ctx.beginPath();
-    ctx.moveTo(obstacle.screenX, groundLineY);
-    ctx.lineTo(obstacle.screenX + obstacle.width, groundLineY);
-    ctx.lineTo(obstacle.screenX + obstacle.width / 2, groundLineY - obstacle.height);
-    ctx.closePath();
-    ctx.fill();
+    if (obstacle.type === 'block') {
+      ctx.fillRect(obstacle.screenX, groundLineY - obstacle.height, obstacle.width, obstacle.height);
+    } else {
+      ctx.beginPath();
+      ctx.moveTo(obstacle.screenX, groundLineY);
+      ctx.lineTo(obstacle.screenX + obstacle.width, groundLineY);
+      ctx.lineTo(obstacle.screenX + obstacle.width / 2, groundLineY - obstacle.height);
+      ctx.closePath();
+      ctx.fill();
+    }
   }
 
   const playerCenterX = PLAYER_X + PLAYER_HEIGHT / 2;
