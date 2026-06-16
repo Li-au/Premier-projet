@@ -4,7 +4,6 @@ const GROUND_COLOR = '#4caf6e';
 const GROUND_MARK_COLOR = '#3d8e59';
 const GROUND_MARK_SPACING = 60;
 const GROUND_MARK_WIDTH = 4;
-const WORLD_SPEED = 0.4;
 const ROTATION_SPEED = 0.006;
 const OBSTACLE_COLOR = '#1a1a1a';
 const TEXT_COLOR = '#f4f4f4';
@@ -22,6 +21,7 @@ let playerRotation;
 let jumpRequested = false;
 let lastTimestamp = null;
 let gameState = 'title';
+let currentLevel = getLevel(1);
 
 function resetGame() {
   state = {elapsedTime: 0};
@@ -48,7 +48,7 @@ function getObstacleRect(obstacle, groundLineY) {
 function requestAction() {
   const previousState = gameState;
   const nextState = transitionGameState(previousState, 'ACTION_PRESSED');
-  if (nextState === 'playing' && previousState !== 'playing') {
+  if (nextState === 'playing' && previousState === 'game_over') {
     resetGame();
   } else if (previousState === 'playing') {
     jumpRequested = true;
@@ -56,10 +56,33 @@ function requestAction() {
   gameState = nextState;
 }
 
+function selectLevel(id) {
+  if (gameState !== 'level_select') {
+    return;
+  }
+  const level = getLevel(id);
+  if (!level) {
+    return;
+  }
+  currentLevel = level;
+  gameState = transitionGameState(gameState, 'LEVEL_SELECTED');
+  resetGame();
+}
+
+const LEVEL_SELECT_KEYS = {
+  Digit1: 1,
+  Digit2: 2,
+  Digit3: 3,
+  Digit4: 4,
+  Digit5: 5,
+};
+
 window.addEventListener('keydown', (event) => {
   if (event.code === 'Space') {
     event.preventDefault();
     requestAction();
+  } else if (event.code in LEVEL_SELECT_KEYS) {
+    selectLevel(LEVEL_SELECT_KEYS[event.code]);
   }
 });
 
@@ -73,7 +96,7 @@ function update(dt) {
 
   state = updateGameTime(state, dt);
   player = updatePlayerPhysics(player, dt, {jumpPressed: jumpRequested});
-  worldOffset = advanceWorld(worldOffset, dt, WORLD_SPEED);
+  worldOffset = advanceWorld(worldOffset, dt, currentLevel.speed);
   jumpRequested = false;
 
   if (player.onGround) {
@@ -84,7 +107,7 @@ function update(dt) {
 
   const groundLineY = GROUND_Y + PLAYER_SIZE;
   const playerRect = getPlayerRect();
-  const visibleObstacles = getVisibleObstacles(LEVEL, worldOffset, canvas.width);
+  const visibleObstacles = getVisibleObstacles(currentLevel.obstacles, worldOffset, canvas.width);
   for (const obstacle of visibleObstacles) {
     if (checkCollision(playerRect, getObstacleRect(obstacle, groundLineY))) {
       gameState = transitionGameState(gameState, 'COLLISION');
@@ -130,7 +153,7 @@ function renderWorld() {
   }
 
   ctx.fillStyle = OBSTACLE_COLOR;
-  const visibleObstacles = getVisibleObstacles(LEVEL, worldOffset, canvas.width);
+  const visibleObstacles = getVisibleObstacles(currentLevel.obstacles, worldOffset, canvas.width);
   for (const obstacle of visibleObstacles) {
     ctx.beginPath();
     ctx.moveTo(obstacle.screenX, groundLineY);
@@ -168,6 +191,8 @@ function render() {
 
   if (gameState === 'title') {
     renderOverlayText('CUBE DASH', 'Espace ou clic pour commencer');
+  } else if (gameState === 'level_select') {
+    renderOverlayText('Choisis un niveau', 'Touches 1 à 5');
   } else if (gameState === 'game_over') {
     renderOverlayText('Game Over', 'Espace ou clic pour recommencer');
   }
