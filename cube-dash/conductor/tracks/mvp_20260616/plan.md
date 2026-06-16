@@ -93,9 +93,24 @@ Extension de scope décidée le 2026-06-16 (voir `spec.md`) : niveaux avec du re
 
 ---
 
-## Phase 8 — Déploiement
+## Phase 8 — Plus d'obstacles et fin de niveau
 
-- [ ] **Tâche 8.1 :** Vérifier que le jeu fonctionne en ouverture directe de `index.html` (file://) sans erreur console
-- [ ] **Tâche 8.2 :** Configurer et déployer sur GitHub Pages, vérifier l'accès via le lien public
+Extension de scope décidée le 2026-06-16 (voir `spec.md`).
+
+- [ ] **Tâche 8.1 :** Écrire les tests pour `hasReachedFinish(worldOffset, finishX, playerX)` (ligne d'arrivée d'un niveau)
+- [ ] **Tâche 8.2 :** Implémenter `hasReachedFinish` et ajouter un `finishX` à chaque niveau
+- [ ] **Tâche 8.3 :** Écrire les tests pour l'extension de la machine d'état (`playing → level_complete` sur `LEVEL_COMPLETE`, `level_complete → level_select` sur `ACTION_PRESSED`)
+- [ ] **Tâche 8.4 :** Implémenter l'extension de la machine d'état, le déclenchement de la fin de niveau dans `game.js` et l'écran "Niveau terminé"
+- [ ] **Tâche 8.5 :** Enrichir tous les niveaux avec davantage d'obstacles (spikes/blocs supplémentaires, plus de variété)
+- [ ] **Tâche 8.6 :** Vérification manuelle complète sur les 5 niveaux (densité d'obstacles, fin de niveau atteignable et claire)
 
 ### Phase Completion Checkpoint — Phase 8
+
+---
+
+## Phase 9 — Déploiement
+
+- [ ] **Tâche 9.1 :** Vérifier que le jeu fonctionne en ouverture directe de `index.html` (file://) sans erreur console
+- [ ] **Tâche 9.2 :** Configurer et déployer sur GitHub Pages, vérifier l'accès via le lien public
+
+### Phase Completion Checkpoint — Phase 9

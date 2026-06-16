@@ -35,10 +35,19 @@ Décidé en cours de track : le terrain n'est plus uniquement un sol plat avec d
 
 Cela nécessite de généraliser la physique du joueur (`resolvePlayerPhysics`, anciennement `updatePlayerPhysics`) pour qu'elle résolve l'atterrissage sur la plateforme la plus proche en dessous du joueur (en plus du sol, toujours présent comme filet de sécurité), plutôt que sur une seule hauteur de sol fixe. Les blocs solides contribuent à la fois à la liste des plateformes (pour l'atterrissage) et à la liste des obstacles (pour la détection de collision mortelle) ; le comportement "safe si posé dessus, mortel sinon" émerge naturellement de ces deux mécanismes combinés, sans logique de collision spécifique supplémentaire.
 
+## Extension de scope (2026-06-16) : davantage d'obstacles et fin de niveau
+
+Décidé en cours de track : chaque niveau a désormais une fin explicite (ligne d'arrivée), au lieu de continuer indéfiniment, et contient plus d'obstacles que la version initiale.
+
+- Chaque niveau a une position de fin (`finishX`) après son dernier obstacle
+- Atteindre cette position déclenche un état "Niveau terminé", avec un écran dédié
+- Depuis cet écran, l'espace/clic ramène à la sélection de niveau (pas de progression automatique au niveau suivant pour le MVP)
+
 ## Hors scope
 
 - Éditeur de niveaux
 - Retour à la sélection de niveau après un Game Over (relance le même niveau)
+- Progression automatique au niveau suivant après une fin de niveau (retour à la sélection)
 - Collision par le dessous/les côtés d'une plateforme (le joueur ne peut interagir qu'avec le dessus d'une plateforme ; passer dessous ou la traverser latéralement ne déclenche pas de collision spécifique)
 - Musique synchronisée, power-ups
 - Score persistant / leaderboard
