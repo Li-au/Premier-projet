@@ -6,6 +6,7 @@ const GROUND_MARK_COLOR = '#34384a';
 const GROUND_MARK_SPACING = 60;
 const GROUND_MARK_WIDTH = 4;
 const WORLD_SPEED = 0.25;
+const ROTATION_SPEED = 0.006;
 
 const canvas = document.getElementById('game-canvas');
 const ctx = canvas.getContext('2d');
@@ -13,6 +14,7 @@ const ctx = canvas.getContext('2d');
 let state = {elapsedTime: 0};
 let player = {y: GROUND_Y, velocityY: 0, onGround: true};
 let worldOffset = 0;
+let playerRotation = 0;
 let jumpRequested = false;
 let lastTimestamp = null;
 
@@ -34,6 +36,12 @@ function update(dt) {
   player = updatePlayerPhysics(player, dt, {jumpPressed: jumpRequested});
   worldOffset = advanceWorld(worldOffset, dt, WORLD_SPEED);
   jumpRequested = false;
+
+  if (player.onGround) {
+    playerRotation = 0;
+  } else {
+    playerRotation += ROTATION_SPEED * dt;
+  }
 }
 
 function render() {
@@ -49,8 +57,14 @@ function render() {
     ctx.fillRect(x, groundLineY, GROUND_MARK_WIDTH, canvas.height - groundLineY);
   }
 
+  const playerCenterX = PLAYER_X + PLAYER_SIZE / 2;
+  const playerCenterY = player.y + PLAYER_SIZE / 2;
+  ctx.save();
+  ctx.translate(playerCenterX, playerCenterY);
+  ctx.rotate(playerRotation);
   ctx.fillStyle = PLAYER_COLOR;
-  ctx.fillRect(PLAYER_X, player.y, PLAYER_SIZE, PLAYER_SIZE);
+  ctx.fillRect(-PLAYER_SIZE / 2, -PLAYER_SIZE / 2, PLAYER_SIZE, PLAYER_SIZE);
+  ctx.restore();
 }
 
 function tick(timestamp) {
