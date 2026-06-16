@@ -11,6 +11,9 @@
 ## Pas de build, pas de dépendances
 Aucun bundler, transpileur ou gestionnaire de paquets n'est nécessaire pour le MVP. Le projet doit pouvoir s'ouvrir directement avec `index.html` dans un navigateur, sans étape de build.
 
+## Tests
+La logique pure (physique, collisions, machine d'état, défilement) est extraite dans des modules ES (`src/*.js`) testés avec le test runner natif de Node.js (`node --test`), sans dépendance externe. Un `package.json` minimal (`{"type": "module"}`) est ajouté uniquement pour indiquer à Node d'interpréter les fichiers `.js` comme modules ES ; il ne déclare aucune dépendance et n'introduit aucune étape de build. Le rendu Canvas et le code lié au DOM ne sont pas couverts par ces tests (non testables hors navigateur sans dépendance supplémentaire) ; ils sont vérifiés manuellement.
+
 ## Hébergement
 GitHub Pages, servi directement depuis le dépôt (branche `main` ou dossier `/docs`, à préciser au moment du déploiement).
 
@@ -20,6 +23,11 @@ cube-dash/
   index.html
   style.css
   game.js
+  package.json
+  src/
+    gameLoop.js
+  test/
+    gameLoop.test.js
   conductor/
 ```
 
