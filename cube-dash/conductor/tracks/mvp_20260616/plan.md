@@ -10,7 +10,7 @@ Test runner : Node.js natif (`node --test`), aucune dépendance externe, conform
 
 - [x] **Tâche 1.1 :** Créer la structure de fichiers (`index.html`, `style.css`, `game.js`) avec un canvas vide affiché à l'écran `[7856d83]`
 - [x] **Tâche 1.2 :** Écrire les tests pour une fonction pure `createGameLoop`/`update(state, dt)` qui avance un compteur de temps (Red → Green) `[113d3ed]`
-- [ ] **Tâche 1.3 :** Implémenter la boucle de jeu (`requestAnimationFrame`) qui appelle `update`/`render` à chaque frame avec delta time
+- [x] **Tâche 1.3 :** Implémenter la boucle de jeu (`requestAnimationFrame`) qui appelle `update`/`render` à chaque frame avec delta time `[16a1ca2]`
 
 ### Phase Completion Checkpoint — Phase 1
 
