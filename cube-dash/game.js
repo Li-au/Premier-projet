@@ -122,13 +122,16 @@ function renderWorld() {
   ctx.restore();
 }
 
-function renderOverlayText(lines) {
+function renderOverlayText(title, subtitle) {
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.45)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
   ctx.fillStyle = TEXT_COLOR;
   ctx.textAlign = 'center';
-  ctx.font = '32px sans-serif';
-  ctx.fillText(lines[0], canvas.width / 2, canvas.height / 2 - 10);
-  ctx.font = '16px sans-serif';
-  ctx.fillText(lines[1], canvas.width / 2, canvas.height / 2 + 20);
+  ctx.font = 'bold 40px sans-serif';
+  ctx.fillText(title, canvas.width / 2, canvas.height / 2 - 10);
+  ctx.font = '18px sans-serif';
+  ctx.fillText(subtitle, canvas.width / 2, canvas.height / 2 + 24);
 }
 
 function render() {
@@ -136,9 +139,9 @@ function render() {
   renderWorld();
 
   if (gameState === 'title') {
-    renderOverlayText(['CUBE DASH', 'Espace ou clic pour commencer']);
+    renderOverlayText('CUBE DASH', 'Espace ou clic pour commencer');
   } else if (gameState === 'game_over') {
-    renderOverlayText(['Game Over', 'Espace ou clic pour recommencer']);
+    renderOverlayText('Game Over', 'Espace ou clic pour recommencer');
   }
 }
 
