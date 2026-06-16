@@ -6,7 +6,7 @@ Test runner : Node.js natif (`node --test`), aucune dépendance externe, conform
 
 ---
 
-## Phase 1 — Squelette du projet et boucle de jeu
+## Phase 1 — Squelette du projet et boucle de jeu `[checkpoint: 3dfb760]`
 
 - [x] **Tâche 1.1 :** Créer la structure de fichiers (`index.html`, `style.css`, `game.js`) avec un canvas vide affiché à l'écran `[7856d83]`
 - [x] **Tâche 1.2 :** Écrire les tests pour une fonction pure `createGameLoop`/`update(state, dt)` qui avance un compteur de temps (Red → Green) `[113d3ed]`
