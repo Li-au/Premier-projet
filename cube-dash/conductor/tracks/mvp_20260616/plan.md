@@ -102,7 +102,7 @@ Extension de scope décidée le 2026-06-16 (voir `spec.md`).
 - [x] **Tâche 8.3 :** Écrire les tests pour l'extension de la machine d'état (`playing → level_complete` sur `LEVEL_COMPLETE`, `level_complete → level_select` sur `ACTION_PRESSED`) `[0a6fdfc]`
 - [x] **Tâche 8.4 :** Implémenter l'extension de la machine d'état, le déclenchement de la fin de niveau dans `game.js` et l'écran "Niveau terminé" `[ec2b19d]`
 - [x] **Tâche 8.5 :** Enrichir tous les niveaux avec davantage d'obstacles (spikes/blocs supplémentaires, plus de variété) `[a0400c9]`
-- [ ] **Tâche 8.6 :** Vérification manuelle complète sur les 5 niveaux (densité d'obstacles, fin de niveau atteignable et claire)
+- [x] **Tâche 8.6 :** Vérification manuelle complète sur les 5 niveaux (densité d'obstacles, fin de niveau atteignable et claire) `[c2a4096]`
 
 ### Phase Completion Checkpoint — Phase 8
 
