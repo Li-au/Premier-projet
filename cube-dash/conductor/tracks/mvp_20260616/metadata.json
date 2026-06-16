@@ -1,0 +1,7 @@
+{
+  "track_id": "mvp_20260616",
+  "title": "MVP - Cube Dash jouable de bout en bout",
+  "status": "planned",
+  "created_at": "2026-06-16",
+  "description": "Premier track : écran titre, boucle de jeu, gravité/saut, défilement, obstacles, collision, game over/restart, style visuel minimaliste flat."
+}
