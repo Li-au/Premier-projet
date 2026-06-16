@@ -16,6 +16,8 @@ const PAUSE_BUTTON_COLOR = '#3a6ea5';
 const PAUSE_BUTTON_WIDTH = 220;
 const PAUSE_BUTTON_HEIGHT = 50;
 const PAUSE_BUTTON_GAP = 20;
+const PLATFORM_COLOR = '#8a5a3a';
+const PLATFORM_THICKNESS = 16;
 
 const canvas = document.getElementById('game-canvas');
 const ctx = canvas.getContext('2d');
@@ -188,7 +190,10 @@ function update(dt) {
   }
 
   state = updateGameTime(state, dt);
-  player = resolvePlayerPhysics(player, dt, {jumpPressed: jumpRequested}, []);
+  const platformsUnderPlayer = getPlatformsUnderPlayer(
+      currentLevel.platforms, worldOffset, PLAYER_X, PLAYER_HEIGHT);
+  player = resolvePlayerPhysics(
+      player, dt, {jumpPressed: jumpRequested}, platformsUnderPlayer);
   worldOffset = advanceWorld(worldOffset, dt, currentLevel.speed);
   jumpRequested = false;
 
@@ -243,6 +248,12 @@ function renderWorld() {
   const scrolledOffset = worldOffset % GROUND_MARK_SPACING;
   for (let x = -scrolledOffset; x < canvas.width; x += GROUND_MARK_SPACING) {
     ctx.fillRect(x, groundLineY, GROUND_MARK_WIDTH, canvas.height - groundLineY);
+  }
+
+  ctx.fillStyle = PLATFORM_COLOR;
+  const visiblePlatforms = getVisibleObstacles(currentLevel.platforms, worldOffset, canvas.width);
+  for (const platform of visiblePlatforms) {
+    ctx.fillRect(platform.screenX, platform.top, platform.width, PLATFORM_THICKNESS);
   }
 
   ctx.fillStyle = OBSTACLE_COLOR;

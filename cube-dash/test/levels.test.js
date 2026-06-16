@@ -16,12 +16,13 @@ test('LEVELS contains exactly 5 levels with ids 1 to 5', () => {
   assert.deepEqual(LEVELS.map((level) => level.id), [1, 2, 3, 4, 5]);
 });
 
-test('each level has a name, a speed and a non-empty obstacle list', () => {
+test('each level has a name, a speed, a non-empty obstacle list and a platform list', () => {
   for (const level of LEVELS) {
     assert.equal(typeof level.name, 'string');
     assert.equal(typeof level.speed, 'number');
     assert.ok(Array.isArray(level.obstacles));
     assert.ok(level.obstacles.length > 0);
+    assert.ok(Array.isArray(level.platforms));
   }
 });
 

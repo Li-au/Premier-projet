@@ -12,30 +12,35 @@ const LEVELS = [
     name: 'Niveau 1',
     speed: 0.3,
     obstacles: buildObstacles(500, 500, 6),
+    platforms: [{worldX: 900, width: 120, top: 285}],
   },
   {
     id: 2,
     name: 'Niveau 2',
     speed: 0.35,
     obstacles: buildObstacles(500, 450, 7),
+    platforms: [],
   },
   {
     id: 3,
     name: 'Niveau 3',
     speed: 0.4,
     obstacles: buildObstacles(500, 400, 8),
+    platforms: [],
   },
   {
     id: 4,
     name: 'Niveau 4',
     speed: 0.45,
     obstacles: buildObstacles(500, 350, 9),
+    platforms: [],
   },
   {
     id: 5,
     name: 'Niveau 5',
     speed: 0.5,
     obstacles: buildObstacles(500, 300, 10),
+    platforms: [],
   },
 ];
 
