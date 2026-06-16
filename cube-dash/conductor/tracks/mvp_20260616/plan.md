@@ -42,7 +42,7 @@ Test runner : Node.js natif (`node --test`), aucune dépendance externe, conform
 
 - [x] **Tâche 4.1 :** Écrire les tests pour une fonction pure `checkCollision(player, obstacle)` (intersection rectangle/triangle approximée) `[740df09]`
 - [x] **Tâche 4.2 :** Implémenter `checkCollision` et l'intégrer à la boucle (déclenche l'état `game_over`) `[88c532d]`
-- [ ] **Tâche 4.3 :** Écrire les tests pour la machine d'état du jeu `title → playing → game_over → playing` (sur input espace/clic)
+- [x] **Tâche 4.3 :** Écrire les tests pour la machine d'état du jeu `title → playing → game_over → playing` (sur input espace/clic) `[9e39797]`
 - [ ] **Tâche 4.4 :** Implémenter la machine d'état et le redémarrage instantané (réinitialisation complète de la partie)
 
 ### Phase Completion Checkpoint — Phase 4
