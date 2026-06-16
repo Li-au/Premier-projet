@@ -60,9 +60,24 @@ Test runner : Node.js natif (`node --test`), aucune dépendance externe, conform
 
 ---
 
-## Phase 6 — Déploiement
+## Phase 6 — Sélection de niveau et niveaux multiples
 
-- [ ] **Tâche 6.1 :** Vérifier que le jeu fonctionne en ouverture directe de `index.html` (file://) sans erreur console
-- [ ] **Tâche 6.2 :** Configurer et déployer sur GitHub Pages, vérifier l'accès via le lien public
+Extension de scope décidée le 2026-06-16 (voir `spec.md`).
+
+- [ ] **Tâche 6.1 :** Écrire les tests pour la définition de 5 niveaux fixes (`LEVELS`, agencements d'obstacles différents, vitesse et espacement progressifs) et une fonction `getLevel(id)`
+- [ ] **Tâche 6.2 :** Implémenter `LEVELS` (5 niveaux à difficulté progressive) et `getLevel(id)`
+- [ ] **Tâche 6.3 :** Écrire les tests pour l'extension de la machine d'état (`title → level_select → playing`, `LEVEL_SELECTED` avec un id de niveau)
+- [ ] **Tâche 6.4 :** Implémenter l'extension de la machine d'état et le branchement du niveau choisi dans `game.js` (vitesse/obstacles dépendent du niveau sélectionné)
+- [ ] **Tâche 6.5 :** Écrire les tests pour une fonction pure de disposition de la grille de sélection (`getLevelGridLayout(numLevels, screenWidth)` → positions des cases)
+- [ ] **Tâche 6.6 :** Implémenter le rendu de l'écran de sélection (grille de 5 cases numérotées, style flat minimaliste) et la détection du clic sur une case
 
 ### Phase Completion Checkpoint — Phase 6
+
+---
+
+## Phase 7 — Déploiement
+
+- [ ] **Tâche 7.1 :** Vérifier que le jeu fonctionne en ouverture directe de `index.html` (file://) sans erreur console
+- [ ] **Tâche 7.2 :** Configurer et déployer sur GitHub Pages, vérifier l'accès via le lien public
+
+### Phase Completion Checkpoint — Phase 7

@@ -17,9 +17,19 @@ Reprend l'intégralité des user stories de `conductor/requirements.md` :
 7. Redémarrage instantané au clic/espace après Game Over
 8. Couleur du joueur qui évolue progressivement (en fonction du temps écoulé/distance)
 
+## Extension de scope (2026-06-16) : sélection de niveau
+
+Décidé en cours de track, avant le déploiement : ajout d'un écran de sélection de niveau façon Geometry Dash et de 5 niveaux fixes au lieu d'un seul.
+
+- Après l'écran titre, un écran de sélection affiche une grille de 5 cases numérotées (1 à 5)
+- Cliquer sur une case lance le niveau correspondant
+- Les 5 niveaux ont des agencements d'obstacles différents et une difficulté progressive (vitesse de défilement croissante, espacement des obstacles décroissant du niveau 1 au niveau 5)
+- Après un Game Over, l'espace/clic relance le **même niveau** depuis le début (pas de retour automatique à la sélection pour le MVP)
+
 ## Hors scope
 
-- Éditeur de niveaux, niveaux multiples
+- Éditeur de niveaux
+- Retour à la sélection de niveau après un Game Over (relance le même niveau)
 - Musique synchronisée, power-ups
 - Score persistant / leaderboard
 
