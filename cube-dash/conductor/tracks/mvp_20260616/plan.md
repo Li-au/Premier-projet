@@ -52,7 +52,7 @@ Test runner : Node.js natif (`node --test`), aucune dépendance externe, conform
 ## Phase 5 — Habillage visuel et écran titre
 
 - [x] **Tâche 5.1 :** Écrire les tests pour une fonction pure `getPlayerColor(elapsedTime|distance)` qui retourne une couleur progressive `[b02a915]`
-- [ ] **Tâche 5.2 :** Implémenter `getPlayerColor` et l'appliquer au rendu du joueur
+- [x] **Tâche 5.2 :** Implémenter `getPlayerColor` et l'appliquer au rendu du joueur `[04cce6f]`
 - [ ] **Tâche 5.3 :** Implémenter l'écran titre "CUBE DASH" (police simple, invite à démarrer) conforme à `product-guidelines.md`
 - [ ] **Tâche 5.4 :** Finaliser le style visuel minimaliste flat (couleurs plates, contraste obstacles/joueur/fond) sur l'ensemble des écrans
 
