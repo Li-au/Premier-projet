@@ -68,7 +68,7 @@ Extension de scope décidée le 2026-06-16 (voir `spec.md`).
 - [x] **Tâche 6.2 :** Implémenter `LEVELS` (5 niveaux à difficulté progressive) et `getLevel(id)` `[d7b9609]`
 - [x] **Tâche 6.3 :** Écrire les tests pour l'extension de la machine d'état (`title → level_select → playing`, `LEVEL_SELECTED` avec un id de niveau) `[013e189]`
 - [x] **Tâche 6.4 :** Implémenter l'extension de la machine d'état et le branchement du niveau choisi dans `game.js` (vitesse/obstacles dépendent du niveau sélectionné) `[6e66c26]`
-- [ ] **Tâche 6.5 :** Écrire les tests pour une fonction pure de disposition de la grille de sélection (`getLevelGridLayout(numLevels, screenWidth)` → positions des cases)
+- [x] **Tâche 6.5 :** Écrire les tests pour une fonction pure de disposition de la grille de sélection (`getLevelGridLayout(numLevels, screenWidth)` → positions des cases) `[ea0bd93]`
 - [ ] **Tâche 6.6 :** Implémenter le rendu de l'écran de sélection (grille de 5 cases numérotées, style flat minimaliste) et la détection du clic sur une case
 
 ### Phase Completion Checkpoint — Phase 6
