@@ -1,6 +1,5 @@
 const PLAYER_SIZE = 30;
 const PLAYER_X = 80;
-const PLAYER_COLOR = '#f5a623';
 const GROUND_COLOR = '#1d1f27';
 const GROUND_MARK_COLOR = '#34384a';
 const GROUND_MARK_SPACING = 60;
@@ -118,7 +117,7 @@ function renderWorld() {
   ctx.save();
   ctx.translate(playerCenterX, playerCenterY);
   ctx.rotate(playerRotation);
-  ctx.fillStyle = PLAYER_COLOR;
+  ctx.fillStyle = getPlayerColor(state.elapsedTime);
   ctx.fillRect(-PLAYER_SIZE / 2, -PLAYER_SIZE / 2, PLAYER_SIZE, PLAYER_SIZE);
   ctx.restore();
 }
