@@ -1,12 +1,3 @@
-const LEVEL = [
-  {worldX: 500, width: 30, height: 30},
-  {worldX: 900, width: 30, height: 30},
-  {worldX: 1300, width: 30, height: 30},
-  {worldX: 1800, width: 30, height: 30},
-  {worldX: 2200, width: 30, height: 30},
-  {worldX: 2600, width: 30, height: 30},
-];
-
 /**
  * @param {Array<{worldX: number, width: number, height: number}>} level
  * @param {number} worldOffset Current horizontal scroll offset.
@@ -23,5 +14,5 @@ function getVisibleObstacles(level, worldOffset, screenWidth) {
 }
 
 if (typeof module !== 'undefined') {
-  module.exports = {LEVEL, getVisibleObstacles};
+  module.exports = {getVisibleObstacles};
 }

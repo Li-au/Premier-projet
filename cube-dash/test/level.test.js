@@ -1,16 +1,6 @@
 const {test} = require('node:test');
 const assert = require('node:assert/strict');
-const {LEVEL, getVisibleObstacles} = require('../src/level.js');
-
-test('LEVEL is a non-empty fixed list of obstacles with a worldX position', () => {
-  assert.ok(Array.isArray(LEVEL));
-  assert.ok(LEVEL.length > 0);
-  for (const obstacle of LEVEL) {
-    assert.equal(typeof obstacle.worldX, 'number');
-    assert.equal(typeof obstacle.width, 'number');
-    assert.equal(typeof obstacle.height, 'number');
-  }
-});
+const {getVisibleObstacles} = require('../src/level.js');
 
 test('getVisibleObstacles converts worldX to screenX using worldOffset', () => {
   const level = [{worldX: 500, width: 30, height: 30}];
