@@ -74,15 +74,6 @@ function getPauseMenuButtons() {
   ];
 }
 
-function getObstacleRect(obstacle, groundLineY) {
-  return {
-    x: obstacle.screenX,
-    y: groundLineY - obstacle.height,
-    width: obstacle.width,
-    height: obstacle.height,
-  };
-}
-
 function requestAction() {
   const previousState = gameState;
   const nextState = transitionGameState(previousState, 'ACTION_PRESSED');
