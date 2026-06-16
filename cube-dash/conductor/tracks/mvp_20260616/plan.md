@@ -76,7 +76,7 @@ Extension de scope décidée le 2026-06-16 (voir `spec.md`).
 
 ---
 
-## Phase 7 — Plateformes flottantes et blocs solides
+## Phase 7 — Plateformes flottantes et blocs solides `[checkpoint: 7ada814]`
 
 Extension de scope décidée le 2026-06-16 (voir `spec.md`) : niveaux avec du relief façon Geometry Dash (plateformes en hauteur à atteindre en sautant, blocs solides pouvant aussi servir d'obstacles mortels).
 
