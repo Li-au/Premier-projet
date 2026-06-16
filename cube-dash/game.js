@@ -1,5 +1,7 @@
-import {updateGameTime} from './src/gameLoop.js';
-import {updatePlayerPhysics, GROUND_Y} from './src/playerPhysics.js';
+const PLAYER_SIZE = 30;
+const PLAYER_X = 80;
+const PLAYER_COLOR = '#f5a623';
+const GROUND_COLOR = '#1d1f27';
 
 const canvas = document.getElementById('game-canvas');
 const ctx = canvas.getContext('2d');
@@ -30,6 +32,13 @@ function update(dt) {
 
 function render() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const groundLineY = GROUND_Y + PLAYER_SIZE;
+  ctx.fillStyle = GROUND_COLOR;
+  ctx.fillRect(0, groundLineY, canvas.width, canvas.height - groundLineY);
+
+  ctx.fillStyle = PLAYER_COLOR;
+  ctx.fillRect(PLAYER_X, player.y, PLAYER_SIZE, PLAYER_SIZE);
 }
 
 function tick(timestamp) {

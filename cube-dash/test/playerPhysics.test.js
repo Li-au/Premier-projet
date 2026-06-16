@@ -1,9 +1,6 @@
-import {test} from 'node:test';
-import assert from 'node:assert/strict';
-import {
-  updatePlayerPhysics,
-  GROUND_Y,
-} from '../src/playerPhysics.js';
+const {test} = require('node:test');
+const assert = require('node:assert/strict');
+const {updatePlayerPhysics, GROUND_Y} = require('../src/playerPhysics.js');
 
 test('player resting on the ground without jump input stays on the ground', () => {
   const player = {y: GROUND_Y, velocityY: 0, onGround: true};

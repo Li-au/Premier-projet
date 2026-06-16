@@ -1,6 +1,6 @@
-import {test} from 'node:test';
-import assert from 'node:assert/strict';
-import {updateGameTime} from '../src/gameLoop.js';
+const {test} = require('node:test');
+const assert = require('node:assert/strict');
+const {updateGameTime} = require('../src/gameLoop.js');
 
 test('updateGameTime adds dt to elapsedTime', () => {
   const state = {elapsedTime: 0};

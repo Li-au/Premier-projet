@@ -12,7 +12,14 @@
 Aucun bundler, transpileur ou gestionnaire de paquets n'est nécessaire pour le MVP. Le projet doit pouvoir s'ouvrir directement avec `index.html` dans un navigateur, sans étape de build.
 
 ## Tests
-La logique pure (physique, collisions, machine d'état, défilement) est extraite dans des modules ES (`src/*.js`) testés avec le test runner natif de Node.js (`node --test`), sans dépendance externe. Un `package.json` minimal (`{"type": "module"}`) est ajouté uniquement pour indiquer à Node d'interpréter les fichiers `.js` comme modules ES ; il ne déclare aucune dépendance et n'introduit aucune étape de build. Le rendu Canvas et le code lié au DOM ne sont pas couverts par ces tests (non testables hors navigateur sans dépendance supplémentaire) ; ils sont vérifiés manuellement.
+La logique pure (physique, collisions, machine d'état, défilement) est extraite dans des fichiers `src/*.js` testés avec le test runner natif de Node.js (`node --test`), sans dépendance externe. Le rendu Canvas et le code lié au DOM ne sont pas couverts par ces tests (non testables hors navigateur sans dépendance supplémentaire) ; ils sont vérifiés manuellement.
+
+## Déviation (2026-06-16) : scripts classiques au lieu de modules ES dans le navigateur
+**Constat :** `<script type="module">` déclenche une erreur CORS dans Chrome/Edge lorsque la page est ouverte via `file://` (origine `null`), ce qui empêche `index.html` de fonctionner en ouverture directe — en contradiction avec la contrainte "pas de build, pas de serveur" ci-dessus.
+
+**Décision :** Les fichiers `src/*.js` n'utilisent plus `export`/`import`. Ce sont des scripts classiques qui déclarent leurs fonctions dans la portée globale, chargés dans `index.html` via des balises `<script src="...">` successives (sans `type="module"`), dans l'ordre des dépendances, avant `game.js`. Pour rester testables avec `node --test` (qui utilise CommonJS par défaut sans `"type": "module"` dans `package.json`), chaque fichier `src/*.js` expose aussi ses fonctions via `module.exports`, protégé par une vérification `typeof module !== 'undefined'` qui ne s'exécute donc pas dans le navigateur.
+
+Conséquence : `package.json` ne déclare plus `"type": "module"`, et les fichiers de test utilisent `require()` au lieu de `import`.
 
 ## Hébergement
 GitHub Pages, servi directement depuis le dépôt (branche `main` ou dossier `/docs`, à préciser au moment du déploiement).

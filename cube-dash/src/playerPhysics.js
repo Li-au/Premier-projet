@@ -1,4 +1,4 @@
-export const GROUND_Y = 300;
+const GROUND_Y = 300;
 const GRAVITY = 0.0025;
 const JUMP_VELOCITY = -0.8;
 
@@ -9,7 +9,7 @@ const JUMP_VELOCITY = -0.8;
  * @return {{y: number, velocityY: number, onGround: boolean}} A new player
  *     state advanced by dt.
  */
-export function updatePlayerPhysics(player, dt, input) {
+function updatePlayerPhysics(player, dt, input) {
   let velocityY = player.velocityY;
   let onGround = player.onGround;
 
@@ -29,4 +29,8 @@ export function updatePlayerPhysics(player, dt, input) {
   }
 
   return {y, velocityY, onGround};
+}
+
+if (typeof module !== 'undefined') {
+  module.exports = {updatePlayerPhysics, GROUND_Y};
 }
