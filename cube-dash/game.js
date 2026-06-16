@@ -18,6 +18,10 @@ const PAUSE_BUTTON_HEIGHT = 50;
 const PAUSE_BUTTON_GAP = 20;
 const PLATFORM_COLOR = '#8a5a3a';
 const PLATFORM_THICKNESS = 16;
+const PROGRESS_BAR_HEIGHT = 8;
+const PROGRESS_BAR_MARGIN = 10;
+const PROGRESS_BAR_BG_COLOR = 'rgba(255, 255, 255, 0.25)';
+const PROGRESS_BAR_FILL_COLOR = '#ffce54';
 
 const canvas = document.getElementById('game-canvas');
 const ctx = canvas.getContext('2d');
@@ -355,7 +359,14 @@ function render() {
     ctx.fillStyle = TEXT_COLOR;
     ctx.textAlign = 'left';
     ctx.font = '14px sans-serif';
-    ctx.fillText('Échap : pause', 10, 20);
+    ctx.fillText('Échap : pause', 10, 20 + PROGRESS_BAR_HEIGHT + PROGRESS_BAR_MARGIN);
+
+    const barWidth = canvas.width - 2 * PROGRESS_BAR_MARGIN;
+    const progress = getLevelProgress(worldOffset, currentLevel.finishX, PLAYER_X);
+    ctx.fillStyle = PROGRESS_BAR_BG_COLOR;
+    ctx.fillRect(PROGRESS_BAR_MARGIN, PROGRESS_BAR_MARGIN, barWidth, PROGRESS_BAR_HEIGHT);
+    ctx.fillStyle = PROGRESS_BAR_FILL_COLOR;
+    ctx.fillRect(PROGRESS_BAR_MARGIN, PROGRESS_BAR_MARGIN, barWidth * (progress / 100), PROGRESS_BAR_HEIGHT);
   }
 }
 
