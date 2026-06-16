@@ -40,7 +40,7 @@ Test runner : Node.js natif (`node --test`), aucune dépendance externe, conform
 
 ## Phase 4 — Collision, Game Over, redémarrage
 
-- [ ] **Tâche 4.1 :** Écrire les tests pour une fonction pure `checkCollision(player, obstacle)` (intersection rectangle/triangle approximée)
+- [x] **Tâche 4.1 :** Écrire les tests pour une fonction pure `checkCollision(player, obstacle)` (intersection rectangle/triangle approximée) `[740df09]`
 - [ ] **Tâche 4.2 :** Implémenter `checkCollision` et l'intégrer à la boucle (déclenche l'état `game_over`)
 - [ ] **Tâche 4.3 :** Écrire les tests pour la machine d'état du jeu `title → playing → game_over → playing` (sur input espace/clic)
 - [ ] **Tâche 4.4 :** Implémenter la machine d'état et le redémarrage instantané (réinitialisation complète de la partie)
