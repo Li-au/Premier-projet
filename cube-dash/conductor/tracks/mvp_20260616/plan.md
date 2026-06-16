@@ -112,7 +112,7 @@ Extension de scope décidée le 2026-06-16 (voir `spec.md`).
 
 Extension de scope décidée le 2026-06-16 (voir `spec.md`).
 
-- [ ] **Tâche 9.1 :** Écrire les tests pour `getLevelProgress(worldOffset, finishX, playerX)` (pourcentage 0-100 d'avancement dans le niveau)
+- [x] **Tâche 9.1 :** Écrire les tests pour `getLevelProgress(worldOffset, finishX, playerX)` (pourcentage 0-100 d'avancement dans le niveau) `[dfb4d87]`
 - [ ] **Tâche 9.2 :** Implémenter `getLevelProgress` et l'afficher sous forme de barre de progression en haut de l'écran pendant le jeu
 - [ ] **Tâche 9.3 :** Allonger tous les niveaux (plus d'obstacles, parcours plus long) en conservant la garantie d'équité physique des écarts
 - [ ] **Tâche 9.4 :** Vérification manuelle complète (barre de progression cohérente, niveaux plus longs toujours jouables jusqu'au bout)
