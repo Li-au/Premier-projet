@@ -2,13 +2,20 @@ const {test} = require('node:test');
 const assert = require('node:assert/strict');
 const {LEVELS, getLevel, JUMP_CYCLE_MS} = require('../src/levels.js');
 
-function gaps(level) {
-  const positions = level.obstacles.map((obstacle) => obstacle.worldX);
+function gapsWithFlag(level) {
+  const obstacles = level.obstacles;
   const result = [];
-  for (let i = 1; i < positions.length; i++) {
-    result.push(positions[i] - positions[i - 1]);
+  for (let i = 1; i < obstacles.length; i++) {
+    result.push({
+      value: obstacles[i].worldX - obstacles[i - 1].worldX,
+      isStaircaseStep: Boolean(obstacles[i].staircaseStep),
+    });
   }
   return result;
+}
+
+function gaps(level) {
+  return gapsWithFlag(level).map((gap) => gap.value);
 }
 
 function averageTimeBetweenObstacles(level) {
@@ -51,12 +58,26 @@ test('average time between obstacles decreases progressively from level 1 to lev
   }
 });
 
-test('every gap is always long enough for a full jump cycle, regardless of level speed', () => {
+test('every gap is always long enough for a full jump cycle, except staircase steps', () => {
   for (const level of LEVELS) {
     const minSafeGap = level.speed * JUMP_CYCLE_MS;
-    for (const gap of gaps(level)) {
-      assert.ok(gap >= minSafeGap);
+    for (const gap of gapsWithFlag(level)) {
+      if (!gap.isStaircaseStep) {
+        assert.ok(gap.value >= minSafeGap);
+      }
     }
+  }
+});
+
+test('staircases have a second step taller than the first', () => {
+  for (const level of LEVELS) {
+    level.obstacles.forEach((obstacle, index) => {
+      if (obstacle.staircaseStep) {
+        const firstStep = level.obstacles[index - 1];
+        assert.equal(firstStep.type, 'block');
+        assert.ok(obstacle.height > firstStep.height);
+      }
+    });
   }
 });
 
