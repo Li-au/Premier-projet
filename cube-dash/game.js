@@ -5,8 +5,9 @@ const GROUND_COLOR = '#1d1f27';
 const GROUND_MARK_COLOR = '#34384a';
 const GROUND_MARK_SPACING = 60;
 const GROUND_MARK_WIDTH = 4;
-const WORLD_SPEED = 0.25;
+const WORLD_SPEED = 0.4;
 const ROTATION_SPEED = 0.006;
+const OBSTACLE_COLOR = '#e44d4d';
 
 const canvas = document.getElementById('game-canvas');
 const ctx = canvas.getContext('2d');
@@ -55,6 +56,17 @@ function render() {
   const scrolledOffset = worldOffset % GROUND_MARK_SPACING;
   for (let x = -scrolledOffset; x < canvas.width; x += GROUND_MARK_SPACING) {
     ctx.fillRect(x, groundLineY, GROUND_MARK_WIDTH, canvas.height - groundLineY);
+  }
+
+  ctx.fillStyle = OBSTACLE_COLOR;
+  const visibleObstacles = getVisibleObstacles(LEVEL, worldOffset, canvas.width);
+  for (const obstacle of visibleObstacles) {
+    ctx.beginPath();
+    ctx.moveTo(obstacle.screenX, groundLineY);
+    ctx.lineTo(obstacle.screenX + obstacle.width, groundLineY);
+    ctx.lineTo(obstacle.screenX + obstacle.width / 2, groundLineY - obstacle.height);
+    ctx.closePath();
+    ctx.fill();
   }
 
   const playerCenterX = PLAYER_X + PLAYER_SIZE / 2;

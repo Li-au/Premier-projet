@@ -1,6 +1,6 @@
 const GROUND_Y = 300;
 const GRAVITY = 0.0025;
-const JUMP_VELOCITY = -0.8;
+const JUMP_VELOCITY = -0.6;
 
 /**
  * @param {{y: number, velocityY: number, onGround: boolean}} player

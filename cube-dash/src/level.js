@@ -1,10 +1,10 @@
 const LEVEL = [
-  {worldX: 400, width: 30, height: 30},
-  {worldX: 650, width: 30, height: 30},
+  {worldX: 500, width: 30, height: 30},
   {worldX: 900, width: 30, height: 30},
-  {worldX: 1200, width: 30, height: 30},
-  {worldX: 1450, width: 30, height: 30},
-  {worldX: 1700, width: 30, height: 30},
+  {worldX: 1300, width: 30, height: 30},
+  {worldX: 1800, width: 30, height: 30},
+  {worldX: 2200, width: 30, height: 30},
+  {worldX: 2600, width: 30, height: 30},
 ];
 
 /**
