@@ -21,7 +21,7 @@ Test runner : Node.js natif (`node --test`), aucune dépendance externe, conform
 - [x] **Tâche 2.1 :** Écrire les tests pour une fonction pure `updatePlayerPhysics(player, dt, input)` : gravité appliquée en l'air, saut déclenché au sol, position clampée au sol `[0fde645]`
 - [x] **Tâche 2.2 :** Implémenter `updatePlayerPhysics` `[0fde645]`
 - [x] **Tâche 2.3 :** Brancher les contrôles (espace + clic) sur l'impulsion de saut `[f8a1d73]`
-- [ ] **Tâche 2.4 :** Dessiner le joueur (carré) et le sol sur le canvas
+- [x] **Tâche 2.4 :** Dessiner le joueur (carré) et le sol sur le canvas `[a9dd8aa]`
 
 ### Phase Completion Checkpoint — Phase 2
 
