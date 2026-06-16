@@ -30,6 +30,7 @@ const LEVELS = [
       buildBlock(4000, 40, 50),
     ],
     platforms: [],
+    finishX: 4300,
   },
   {
     id: 2,
@@ -37,6 +38,7 @@ const LEVELS = [
     speed: 0.35,
     obstacles: [...buildObstacles(500, 450, 7), buildBlock(3650, 40, 50)],
     platforms: [],
+    finishX: 3950,
   },
   {
     id: 3,
@@ -44,6 +46,7 @@ const LEVELS = [
     speed: 0.4,
     obstacles: [...buildObstacles(500, 400, 8), buildBlock(3700, 40, 50)],
     platforms: [],
+    finishX: 4000,
   },
   {
     id: 4,
@@ -51,6 +54,7 @@ const LEVELS = [
     speed: 0.45,
     obstacles: [...buildObstacles(500, 350, 9), buildBlock(3650, 40, 50)],
     platforms: [],
+    finishX: 3950,
   },
   {
     id: 5,
@@ -58,6 +62,7 @@ const LEVELS = [
     speed: 0.5,
     obstacles: [...buildObstacles(500, 300, 10), buildBlock(3500, 40, 50)],
     platforms: [],
+    finishX: 3800,
   },
 ];
 

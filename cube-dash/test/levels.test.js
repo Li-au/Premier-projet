@@ -26,6 +26,13 @@ test('each level has a name, a speed, a non-empty obstacle list and a platform l
   }
 });
 
+test('each level has a finishX positioned after its last obstacle', () => {
+  for (const level of LEVELS) {
+    const lastObstacle = level.obstacles[level.obstacles.length - 1];
+    assert.ok(level.finishX > lastObstacle.worldX + lastObstacle.width);
+  }
+});
+
 test('speed increases progressively from level 1 to level 5', () => {
   for (let i = 1; i < LEVELS.length; i++) {
     assert.ok(LEVELS[i].speed > LEVELS[i - 1].speed);
