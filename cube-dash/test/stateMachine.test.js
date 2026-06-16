@@ -57,3 +57,15 @@ test('paused state moves to level_select on quit to select', () => {
 test('paused state ignores collision', () => {
   assert.equal(transitionGameState('paused', 'COLLISION'), 'paused');
 });
+
+test('playing state moves to level_complete on level complete', () => {
+  assert.equal(transitionGameState('playing', 'LEVEL_COMPLETE'), 'level_complete');
+});
+
+test('level_complete state moves to level_select on action pressed', () => {
+  assert.equal(transitionGameState('level_complete', 'ACTION_PRESSED'), 'level_select');
+});
+
+test('level_complete state ignores collision', () => {
+  assert.equal(transitionGameState('level_complete', 'COLLISION'), 'level_complete');
+});
