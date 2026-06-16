@@ -60,7 +60,7 @@ Test runner : Node.js natif (`node --test`), aucune dépendance externe, conform
 
 ---
 
-## Phase 6 — Sélection de niveau et niveaux multiples
+## Phase 6 — Sélection de niveau et niveaux multiples `[checkpoint: 83e0a89]`
 
 Extension de scope décidée le 2026-06-16 (voir `spec.md`).
 
