@@ -18,6 +18,20 @@ let worldOffset = 0;
 let playerRotation = 0;
 let jumpRequested = false;
 let lastTimestamp = null;
+let gameState = 'playing';
+
+function getPlayerRect() {
+  return {x: PLAYER_X, y: player.y, width: PLAYER_SIZE, height: PLAYER_SIZE};
+}
+
+function getObstacleRect(obstacle, groundLineY) {
+  return {
+    x: obstacle.screenX,
+    y: groundLineY - obstacle.height,
+    width: obstacle.width,
+    height: obstacle.height,
+  };
+}
 
 function requestJump() {
   jumpRequested = true;
@@ -33,6 +47,11 @@ window.addEventListener('keydown', (event) => {
 canvas.addEventListener('click', requestJump);
 
 function update(dt) {
+  if (gameState !== 'playing') {
+    jumpRequested = false;
+    return;
+  }
+
   state = updateGameTime(state, dt);
   player = updatePlayerPhysics(player, dt, {jumpPressed: jumpRequested});
   worldOffset = advanceWorld(worldOffset, dt, WORLD_SPEED);
@@ -42,6 +61,16 @@ function update(dt) {
     playerRotation = 0;
   } else {
     playerRotation += ROTATION_SPEED * dt;
+  }
+
+  const groundLineY = GROUND_Y + PLAYER_SIZE;
+  const playerRect = getPlayerRect();
+  const visibleObstacles = getVisibleObstacles(LEVEL, worldOffset, canvas.width);
+  for (const obstacle of visibleObstacles) {
+    if (checkCollision(playerRect, getObstacleRect(obstacle, groundLineY))) {
+      gameState = 'game_over';
+      break;
+    }
   }
 }
 
