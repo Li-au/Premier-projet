@@ -121,7 +121,7 @@ Extension de scope décidée le 2026-06-16 (voir `spec.md`).
 
 ---
 
-## Phase 10 — Déploiement
+## Phase 10 — Déploiement `[checkpoint: 4e6a6bc]`
 
 - [x] **Tâche 10.1 :** Vérifier que le jeu fonctionne en ouverture directe de `index.html` (file://) sans erreur console `[verified]`
 - [x] **Tâche 10.2 :** Configurer et déployer sur GitHub Pages, vérifier l'accès via le lien public `[6aafd38]`
