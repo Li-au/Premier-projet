@@ -10,6 +10,9 @@ const TEXT_COLOR = '#f4f4f4';
 const SUN_COLOR = '#ffce54';
 const HILL_FAR_COLOR = '#9b7fc4';
 const HILL_NEAR_COLOR = '#6c54a3';
+const LEVEL_CELL_COLOR = '#3a6ea5';
+const LEVEL_CELL_TEXT_COLOR = '#f4f4f4';
+const NUM_LEVELS = 5;
 
 const canvas = document.getElementById('game-canvas');
 const ctx = canvas.getContext('2d');
@@ -34,6 +37,12 @@ resetGame();
 
 function getPlayerRect() {
   return {x: PLAYER_X, y: player.y, width: PLAYER_SIZE, height: PLAYER_SIZE};
+}
+
+function getLevelGridCells() {
+  const layout = getLevelGridLayout(NUM_LEVELS, canvas.width);
+  const gridY = canvas.height / 2 - CELL_SIZE / 2;
+  return layout.map((cell) => ({...cell, y: gridY}));
 }
 
 function getObstacleRect(obstacle, groundLineY) {
@@ -86,7 +95,34 @@ window.addEventListener('keydown', (event) => {
   }
 });
 
-canvas.addEventListener('click', requestAction);
+function getCanvasPosition(event) {
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+  return {
+    x: (event.clientX - rect.left) * scaleX,
+    y: (event.clientY - rect.top) * scaleY,
+  };
+}
+
+function handleLevelSelectClick(event) {
+  const {x, y} = getCanvasPosition(event);
+  for (const cell of getLevelGridCells()) {
+    if (x >= cell.x && x <= cell.x + cell.width &&
+        y >= cell.y && y <= cell.y + cell.height) {
+      selectLevel(cell.id);
+      return;
+    }
+  }
+}
+
+canvas.addEventListener('click', (event) => {
+  if (gameState === 'level_select') {
+    handleLevelSelectClick(event);
+  } else {
+    requestAction();
+  }
+});
 
 function update(dt) {
   if (gameState !== 'playing') {
@@ -185,6 +221,25 @@ function renderOverlayText(title, subtitle) {
   ctx.fillText(subtitle, canvas.width / 2, canvas.height / 2 + 24);
 }
 
+function renderLevelGrid() {
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.45)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = TEXT_COLOR;
+  ctx.textAlign = 'center';
+  ctx.font = 'bold 28px sans-serif';
+  ctx.fillText('Choisis un niveau', canvas.width / 2, canvas.height / 2 - 70);
+
+  for (const cell of getLevelGridCells()) {
+    ctx.fillStyle = LEVEL_CELL_COLOR;
+    ctx.fillRect(cell.x, cell.y, cell.width, cell.height);
+
+    ctx.fillStyle = LEVEL_CELL_TEXT_COLOR;
+    ctx.font = 'bold 24px sans-serif';
+    ctx.fillText(String(cell.id), cell.x + cell.width / 2, cell.y + cell.height / 2 + 8);
+  }
+}
+
 function render() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   renderWorld();
@@ -192,7 +247,7 @@ function render() {
   if (gameState === 'title') {
     renderOverlayText('CUBE DASH', 'Espace ou clic pour commencer');
   } else if (gameState === 'level_select') {
-    renderOverlayText('Choisis un niveau', 'Touches 1 à 5');
+    renderLevelGrid();
   } else if (gameState === 'game_over') {
     renderOverlayText('Game Over', 'Espace ou clic pour recommencer');
   }
