@@ -97,8 +97,8 @@ Extension de scope décidée le 2026-06-16 (voir `spec.md`) : niveaux avec du re
 
 Extension de scope décidée le 2026-06-16 (voir `spec.md`).
 
-- [ ] **Tâche 8.1 :** Écrire les tests pour `hasReachedFinish(worldOffset, finishX, playerX)` (ligne d'arrivée d'un niveau)
-- [ ] **Tâche 8.2 :** Implémenter `hasReachedFinish` et ajouter un `finishX` à chaque niveau
+- [x] **Tâche 8.1 :** Écrire les tests pour `hasReachedFinish(worldOffset, finishX, playerX)` (ligne d'arrivée d'un niveau) `[97cf3a2]`
+- [x] **Tâche 8.2 :** Implémenter `hasReachedFinish` et ajouter un `finishX` à chaque niveau `[97cf3a2]`
 - [ ] **Tâche 8.3 :** Écrire les tests pour l'extension de la machine d'état (`playing → level_complete` sur `LEVEL_COMPLETE`, `level_complete → level_select` sur `ACTION_PRESSED`)
 - [ ] **Tâche 8.4 :** Implémenter l'extension de la machine d'état, le déclenchement de la fin de niveau dans `game.js` et l'écran "Niveau terminé"
 - [ ] **Tâche 8.5 :** Enrichir tous les niveaux avec davantage d'obstacles (spikes/blocs supplémentaires, plus de variété)
