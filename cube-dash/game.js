@@ -1,13 +1,16 @@
 const PLAYER_SIZE = 30;
 const PLAYER_X = 80;
-const GROUND_COLOR = '#1d1f27';
-const GROUND_MARK_COLOR = '#34384a';
+const GROUND_COLOR = '#4caf6e';
+const GROUND_MARK_COLOR = '#3d8e59';
 const GROUND_MARK_SPACING = 60;
 const GROUND_MARK_WIDTH = 4;
 const WORLD_SPEED = 0.4;
 const ROTATION_SPEED = 0.006;
-const OBSTACLE_COLOR = '#e44d4d';
+const OBSTACLE_COLOR = '#1a1a1a';
 const TEXT_COLOR = '#f4f4f4';
+const SUN_COLOR = '#ffce54';
+const HILL_FAR_COLOR = '#9b7fc4';
+const HILL_NEAR_COLOR = '#6c54a3';
 
 const canvas = document.getElementById('game-canvas');
 const ctx = canvas.getContext('2d');
@@ -90,8 +93,33 @@ function update(dt) {
   }
 }
 
+function renderHillRow(color, baseY, amplitude, spacing, parallaxOffset) {
+  ctx.fillStyle = color;
+  const scrolledOffset = parallaxOffset % spacing;
+  for (let x = -scrolledOffset - spacing; x < canvas.width + spacing; x += spacing) {
+    ctx.beginPath();
+    ctx.moveTo(x, baseY);
+    ctx.lineTo(x + spacing / 2, baseY - amplitude);
+    ctx.lineTo(x + spacing, baseY);
+    ctx.closePath();
+    ctx.fill();
+  }
+}
+
+function renderBackground(groundLineY) {
+  ctx.fillStyle = SUN_COLOR;
+  ctx.beginPath();
+  ctx.arc(canvas.width - 90, 70, 32, 0, Math.PI * 2);
+  ctx.fill();
+
+  renderHillRow(HILL_FAR_COLOR, groundLineY, 60, 140, worldOffset * 0.2);
+  renderHillRow(HILL_NEAR_COLOR, groundLineY, 40, 100, worldOffset * 0.4);
+}
+
 function renderWorld() {
   const groundLineY = GROUND_Y + PLAYER_SIZE;
+  renderBackground(groundLineY);
+
   ctx.fillStyle = GROUND_COLOR;
   ctx.fillRect(0, groundLineY, canvas.width, canvas.height - groundLineY);
 
