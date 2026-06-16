@@ -108,7 +108,7 @@ Extension de scope décidée le 2026-06-16 (voir `spec.md`).
 
 ---
 
-## Phase 9 — Niveaux plus longs et barre de progression
+## Phase 9 — Niveaux plus longs et barre de progression `[checkpoint: b8b8fa2]`
 
 Extension de scope décidée le 2026-06-16 (voir `spec.md`).
 
