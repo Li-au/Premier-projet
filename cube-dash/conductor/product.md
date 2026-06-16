@@ -14,16 +14,21 @@ Cube Dash est un jeu d'arcade 2D inspiré de Geometry Dash, jouable directement 
 ## Objectifs du MVP
 1. Un personnage (carré) qui tombe sous l'effet de la gravité et peut sauter
 2. Un défilement horizontal donnant l'impression que le personnage avance
-3. Des obstacles (triangles/spikes) qui apparaissent et doivent être évités
+3. Des obstacles (triangles/spikes, blocs solides à escalader) qui apparaissent et doivent être évités
 4. Une détection de collision : tout contact avec un obstacle déclenche un "Game Over" et un restart immédiat (espace/clic)
 5. Un minimum de style visuel (couleurs, légère animation) pour donner un effet soigné
+6. 5 niveaux à difficulté progressive, sélectionnables depuis une grille cliquable
+7. Des plateformes flottantes sur lesquelles le joueur peut atterrir, en plus du sol
+8. Une pause en cours de partie (touche Échap), avec retour possible à la sélection de niveau
+9. Une fin de niveau explicite (ligne d'arrivée), avec une barre de progression affichée pendant le jeu
 
 ## Hors scope (pour l'instant)
 - Éditeur de niveaux
 - Musique synchronisée au rythme
 - Plusieurs formes de joueur / power-ups
 - Système de score persistant / leaderboard
-- Niveaux multiples (un seul niveau codé "en dur" pour le MVP)
+- Mode vaisseau/fusée (vol libre) et orbes de saut façon Geometry Dash
+- Retour automatique à la sélection de niveau après un Game Over (relance le même niveau) ou après une fin de niveau (retour manuel via l'écran de fin)
 
 ## Critère de succès
 Le jeu tourne dans un navigateur via un simple lien GitHub Pages, est jouable au clavier/souris, et donne une impression de fluidité et de "polish" malgré sa simplicité technique.
