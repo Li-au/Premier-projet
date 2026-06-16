@@ -115,7 +115,7 @@ Extension de scope décidée le 2026-06-16 (voir `spec.md`).
 - [x] **Tâche 9.1 :** Écrire les tests pour `getLevelProgress(worldOffset, finishX, playerX)` (pourcentage 0-100 d'avancement dans le niveau) `[dfb4d87]`
 - [x] **Tâche 9.2 :** Implémenter `getLevelProgress` et l'afficher sous forme de barre de progression en haut de l'écran pendant le jeu `[282e5bd]`
 - [x] **Tâche 9.3 :** Allonger tous les niveaux (plus d'obstacles, parcours plus long) en conservant la garantie d'équité physique des écarts `[1c87afa]`
-- [ ] **Tâche 9.4 :** Vérification manuelle complète (barre de progression cohérente, niveaux plus longs toujours jouables jusqu'au bout)
+- [x] **Tâche 9.4 :** Vérification manuelle complète (barre de progression cohérente, niveaux plus longs toujours jouables jusqu'au bout) `[verified]`
 
 ### Phase Completion Checkpoint — Phase 9
 
