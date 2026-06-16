@@ -30,7 +30,7 @@ Test runner : Node.js natif (`node --test`), aucune dépendance externe, conform
 ## Phase 3 — Défilement et obstacles
 
 - [x] **Tâche 3.1 :** Écrire les tests pour une fonction pure `advanceWorld(worldOffset, dt, speed)` qui fait progresser le défilement `[9c22805]`
-- [ ] **Tâche 3.2 :** Implémenter le défilement horizontal du décor (sol + fond)
+- [x] **Tâche 3.2 :** Implémenter le défilement horizontal du décor (sol + fond) `[4cb0ee0]`
 - [ ] **Tâche 3.3 :** Écrire les tests pour la définition d'un niveau fixe (liste d'obstacles avec position x) et leur passage dans le référentiel écran selon `worldOffset`
 - [ ] **Tâche 3.4 :** Implémenter le rendu des obstacles (triangles/spikes) à l'écran selon leur position relative au défilement
 
