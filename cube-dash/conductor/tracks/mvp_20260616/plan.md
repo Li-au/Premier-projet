@@ -53,7 +53,7 @@ Test runner : Node.js natif (`node --test`), aucune dépendance externe, conform
 
 - [x] **Tâche 5.1 :** Écrire les tests pour une fonction pure `getPlayerColor(elapsedTime|distance)` qui retourne une couleur progressive `[b02a915]`
 - [x] **Tâche 5.2 :** Implémenter `getPlayerColor` et l'appliquer au rendu du joueur `[04cce6f]`
-- [ ] **Tâche 5.3 :** Implémenter l'écran titre "CUBE DASH" (police simple, invite à démarrer) conforme à `product-guidelines.md`
+- [x] **Tâche 5.3 :** Implémenter l'écran titre "CUBE DASH" (police simple, invite à démarrer) conforme à `product-guidelines.md` `[13cb72b]`
 - [ ] **Tâche 5.4 :** Finaliser le style visuel minimaliste flat (couleurs plates, contraste obstacles/joueur/fond) sur l'ensemble des écrans
 
 ### Phase Completion Checkpoint — Phase 5
