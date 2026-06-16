@@ -6,6 +6,10 @@ function buildObstacles(startX, spacing, count) {
   return obstacles;
 }
 
+function buildSpike(worldX) {
+  return {type: 'spike', worldX, width: 30, height: 30};
+}
+
 function buildBlock(worldX, width, height) {
   return {type: 'block', worldX, width, height};
 }
@@ -15,35 +19,44 @@ const LEVELS = [
     id: 1,
     name: 'Niveau 1',
     speed: 0.3,
-    obstacles: [...buildObstacles(500, 500, 6), buildBlock(3300, 40, 50)],
-    platforms: [{worldX: 900, width: 120, top: 285}],
+    obstacles: [
+      buildSpike(500),
+      buildSpike(1000),
+      buildSpike(1500),
+      buildSpike(2000),
+      buildSpike(2500),
+      buildSpike(3000),
+      buildBlock(3500, 40, 50),
+      buildBlock(4000, 40, 50),
+    ],
+    platforms: [],
   },
   {
     id: 2,
     name: 'Niveau 2',
     speed: 0.35,
-    obstacles: buildObstacles(500, 450, 7),
+    obstacles: [...buildObstacles(500, 450, 7), buildBlock(3650, 40, 50)],
     platforms: [],
   },
   {
     id: 3,
     name: 'Niveau 3',
     speed: 0.4,
-    obstacles: buildObstacles(500, 400, 8),
+    obstacles: [...buildObstacles(500, 400, 8), buildBlock(3700, 40, 50)],
     platforms: [],
   },
   {
     id: 4,
     name: 'Niveau 4',
     speed: 0.45,
-    obstacles: buildObstacles(500, 350, 9),
+    obstacles: [...buildObstacles(500, 350, 9), buildBlock(3650, 40, 50)],
     platforms: [],
   },
   {
     id: 5,
     name: 'Niveau 5',
     speed: 0.5,
-    obstacles: buildObstacles(500, 300, 10),
+    obstacles: [...buildObstacles(500, 300, 10), buildBlock(3500, 40, 50)],
     platforms: [],
   },
 ];
