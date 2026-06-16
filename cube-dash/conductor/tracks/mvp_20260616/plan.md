@@ -93,7 +93,7 @@ Extension de scope décidée le 2026-06-16 (voir `spec.md`) : niveaux avec du re
 
 ---
 
-## Phase 8 — Plus d'obstacles et fin de niveau
+## Phase 8 — Plus d'obstacles et fin de niveau `[checkpoint: 05b308c]`
 
 Extension de scope décidée le 2026-06-16 (voir `spec.md`).
 
