@@ -13,6 +13,10 @@ const HILL_NEAR_COLOR = '#6c54a3';
 const LEVEL_CELL_COLOR = '#3a6ea5';
 const LEVEL_CELL_TEXT_COLOR = '#f4f4f4';
 const NUM_LEVELS = 5;
+const PAUSE_BUTTON_COLOR = '#3a6ea5';
+const PAUSE_BUTTON_WIDTH = 220;
+const PAUSE_BUTTON_HEIGHT = 50;
+const PAUSE_BUTTON_GAP = 20;
 
 const canvas = document.getElementById('game-canvas');
 const ctx = canvas.getContext('2d');
@@ -43,6 +47,30 @@ function getLevelGridCells() {
   const layout = getLevelGridLayout(NUM_LEVELS, canvas.width);
   const gridY = canvas.height / 2 - CELL_SIZE / 2;
   return layout.map((cell) => ({...cell, y: gridY}));
+}
+
+function getPauseMenuButtons() {
+  const totalHeight = 2 * PAUSE_BUTTON_HEIGHT + PAUSE_BUTTON_GAP;
+  const startX = (canvas.width - PAUSE_BUTTON_WIDTH) / 2;
+  const startY = canvas.height / 2 - totalHeight / 2;
+  return [
+    {
+      id: 'resume',
+      label: 'Reprendre',
+      x: startX,
+      y: startY,
+      width: PAUSE_BUTTON_WIDTH,
+      height: PAUSE_BUTTON_HEIGHT,
+    },
+    {
+      id: 'select',
+      label: 'Choix du niveau',
+      x: startX,
+      y: startY + PAUSE_BUTTON_HEIGHT + PAUSE_BUTTON_GAP,
+      width: PAUSE_BUTTON_WIDTH,
+      height: PAUSE_BUTTON_HEIGHT,
+    },
+  ];
 }
 
 function getObstacleRect(obstacle, groundLineY) {
@@ -86,10 +114,20 @@ const LEVEL_SELECT_KEYS = {
   Digit5: 5,
 };
 
+function requestPauseToggle() {
+  if (gameState === 'playing') {
+    gameState = transitionGameState(gameState, 'PAUSE');
+  } else if (gameState === 'paused') {
+    gameState = transitionGameState(gameState, 'RESUME');
+  }
+}
+
 window.addEventListener('keydown', (event) => {
   if (event.code === 'Space') {
     event.preventDefault();
     requestAction();
+  } else if (event.code === 'Escape') {
+    requestPauseToggle();
   } else if (event.code in LEVEL_SELECT_KEYS) {
     selectLevel(LEVEL_SELECT_KEYS[event.code]);
   }
@@ -105,12 +143,30 @@ function getCanvasPosition(event) {
   };
 }
 
+function isPointInRect(x, y, rect) {
+  return x >= rect.x && x <= rect.x + rect.width &&
+      y >= rect.y && y <= rect.y + rect.height;
+}
+
 function handleLevelSelectClick(event) {
   const {x, y} = getCanvasPosition(event);
   for (const cell of getLevelGridCells()) {
-    if (x >= cell.x && x <= cell.x + cell.width &&
-        y >= cell.y && y <= cell.y + cell.height) {
+    if (isPointInRect(x, y, cell)) {
       selectLevel(cell.id);
+      return;
+    }
+  }
+}
+
+function handlePausedClick(event) {
+  const {x, y} = getCanvasPosition(event);
+  for (const button of getPauseMenuButtons()) {
+    if (isPointInRect(x, y, button)) {
+      if (button.id === 'resume') {
+        gameState = transitionGameState(gameState, 'RESUME');
+      } else if (button.id === 'select') {
+        gameState = transitionGameState(gameState, 'QUIT_TO_SELECT');
+      }
       return;
     }
   }
@@ -119,6 +175,8 @@ function handleLevelSelectClick(event) {
 canvas.addEventListener('click', (event) => {
   if (gameState === 'level_select') {
     handleLevelSelectClick(event);
+  } else if (gameState === 'paused') {
+    handlePausedClick(event);
   } else {
     requestAction();
   }
@@ -240,6 +298,26 @@ function renderLevelGrid() {
   }
 }
 
+function renderPauseMenu() {
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.55)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = TEXT_COLOR;
+  ctx.textAlign = 'center';
+  ctx.font = 'bold 32px sans-serif';
+  const firstButton = getPauseMenuButtons()[0];
+  ctx.fillText('Pause', canvas.width / 2, firstButton.y - 30);
+
+  for (const button of getPauseMenuButtons()) {
+    ctx.fillStyle = PAUSE_BUTTON_COLOR;
+    ctx.fillRect(button.x, button.y, button.width, button.height);
+
+    ctx.fillStyle = TEXT_COLOR;
+    ctx.font = 'bold 18px sans-serif';
+    ctx.fillText(button.label, button.x + button.width / 2, button.y + button.height / 2 + 6);
+  }
+}
+
 function render() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   renderWorld();
@@ -248,8 +326,15 @@ function render() {
     renderOverlayText('CUBE DASH', 'Espace ou clic pour commencer');
   } else if (gameState === 'level_select') {
     renderLevelGrid();
+  } else if (gameState === 'paused') {
+    renderPauseMenu();
   } else if (gameState === 'game_over') {
     renderOverlayText('Game Over', 'Espace ou clic pour recommencer');
+  } else if (gameState === 'playing') {
+    ctx.fillStyle = TEXT_COLOR;
+    ctx.textAlign = 'left';
+    ctx.font = '14px sans-serif';
+    ctx.fillText('Échap : pause', 10, 20);
   }
 }
 

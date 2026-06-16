@@ -33,3 +33,27 @@ test('title state ignores collision', () => {
 test('game_over state ignores collision', () => {
   assert.equal(transitionGameState('game_over', 'COLLISION'), 'game_over');
 });
+
+test('playing state moves to paused on pause', () => {
+  assert.equal(transitionGameState('playing', 'PAUSE'), 'paused');
+});
+
+test('title state ignores pause', () => {
+  assert.equal(transitionGameState('title', 'PAUSE'), 'title');
+});
+
+test('game_over state ignores pause', () => {
+  assert.equal(transitionGameState('game_over', 'PAUSE'), 'game_over');
+});
+
+test('paused state moves back to playing on resume', () => {
+  assert.equal(transitionGameState('paused', 'RESUME'), 'playing');
+});
+
+test('paused state moves to level_select on quit to select', () => {
+  assert.equal(transitionGameState('paused', 'QUIT_TO_SELECT'), 'level_select');
+});
+
+test('paused state ignores collision', () => {
+  assert.equal(transitionGameState('paused', 'COLLISION'), 'paused');
+});
