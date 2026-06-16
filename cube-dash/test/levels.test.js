@@ -1,14 +1,20 @@
 const {test} = require('node:test');
 const assert = require('node:assert/strict');
-const {LEVELS, getLevel} = require('../src/levels.js');
+const {LEVELS, getLevel, JUMP_CYCLE_MS} = require('../src/levels.js');
 
-function averageSpacing(level) {
+function gaps(level) {
   const positions = level.obstacles.map((obstacle) => obstacle.worldX);
-  let totalGap = 0;
+  const result = [];
   for (let i = 1; i < positions.length; i++) {
-    totalGap += positions[i] - positions[i - 1];
+    result.push(positions[i] - positions[i - 1]);
   }
-  return totalGap / (positions.length - 1);
+  return result;
+}
+
+function averageTimeBetweenObstacles(level) {
+  const levelGaps = gaps(level);
+  const averageGap = levelGaps.reduce((sum, gap) => sum + gap, 0) / levelGaps.length;
+  return averageGap / level.speed;
 }
 
 test('LEVELS contains exactly 5 levels with ids 1 to 5', () => {
@@ -39,9 +45,18 @@ test('speed increases progressively from level 1 to level 5', () => {
   }
 });
 
-test('average obstacle spacing decreases progressively from level 1 to level 5', () => {
+test('average time between obstacles decreases progressively from level 1 to level 5', () => {
   for (let i = 1; i < LEVELS.length; i++) {
-    assert.ok(averageSpacing(LEVELS[i]) < averageSpacing(LEVELS[i - 1]));
+    assert.ok(averageTimeBetweenObstacles(LEVELS[i]) < averageTimeBetweenObstacles(LEVELS[i - 1]));
+  }
+});
+
+test('every gap is always long enough for a full jump cycle, regardless of level speed', () => {
+  for (const level of LEVELS) {
+    const minSafeGap = level.speed * JUMP_CYCLE_MS;
+    for (const gap of gaps(level)) {
+      assert.ok(gap >= minSafeGap);
+    }
   }
 });
 
